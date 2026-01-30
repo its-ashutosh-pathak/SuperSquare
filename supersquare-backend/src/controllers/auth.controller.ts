@@ -301,6 +301,8 @@ export const googleAuth = (req: Request, res: Response) => {
     const platform = req.query.platform || 'web'; // 'web' or 'android'
     const state = encodeURIComponent(JSON.stringify({ mode, platform }));
 
+    console.log(`[Google Auth] Mode: ${mode}, Platform: ${platform}`);
+
     const apiUrl = process.env.API_URL || 'http://localhost:3000';
     const redirectUri = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${apiUrl}/api/auth/google/callback&response_type=code&scope=profile email&state=${state}`;
     res.redirect(redirectUri);
@@ -329,6 +331,8 @@ export const googleCallback = async (req: Request, res: Response) => {
         const clientUrl = isAndroid
             ? 'com.supersquare.game://auth'
             : (process.env.CLIENT_URL || 'http://localhost:5173');
+
+        console.log(`[Google Callback] Platform: ${platform}, isAndroid: ${isAndroid}, clientUrl: ${clientUrl}`);
 
         // 1. Exchange code for token
         const { data } = await axios.post('https://oauth2.googleapis.com/token', {
