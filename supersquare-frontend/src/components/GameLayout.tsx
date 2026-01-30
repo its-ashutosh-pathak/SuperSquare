@@ -42,6 +42,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
 
     // Dynamic Scale for Board to prevent cropping
     const [boardScale, setBoardScale] = useState(1.28);
+    const [headerScale, setHeaderScale] = useState(1);
 
     useEffect(() => {
         const handleResize = () => {
@@ -57,6 +58,17 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                 setBoardScale(newScale);
             } else {
                 setBoardScale(1.28);
+            }
+
+            // Header Scale Logic (Player Strip)
+            // Initial estimated width: ~420px (Name + Pic + VS + Pic + Name)
+            // If screen < 450px, scale down safely
+            const requiredHeaderWidth = 450;
+            if (window.innerWidth < requiredHeaderWidth) {
+                const hScale = window.innerWidth / requiredHeaderWidth;
+                setHeaderScale(hScale);
+            } else {
+                setHeaderScale(1);
             }
         };
 
@@ -207,7 +219,15 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                 </div>
 
                 {/* Game Info */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '0.5rem',
+                    transform: `scale(${headerScale})`,
+                    transformOrigin: 'center center',
+                    width: '100%'
+                }}>
                     {isOnline && mp.opponentName && (
                         <div style={{ display: 'flex', gap: '0.05rem', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                             {/* Opponent */}
