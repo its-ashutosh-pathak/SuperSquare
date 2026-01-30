@@ -29,6 +29,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
     const [lastSentTime, setLastSentTime] = useState(0);
     const [showMessageCard, setShowMessageCard] = useState(false);
     const [showExitModal, setShowExitModal] = useState(false);
+    const [showNewGameModal, setShowNewGameModal] = useState(false);
 
     // Monitor Incoming Messages
     useEffect(() => {
@@ -105,6 +106,15 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
         } else {
             navigate('/');
         }
+    };
+
+    const handleNewGameRequest = () => {
+        setShowNewGameModal(true);
+    };
+
+    const confirmNewGame = () => {
+        setShowNewGameModal(false);
+        localGame.resetGame();
     };
 
     // If online and no room, redirect to lobby (safety)
@@ -391,7 +401,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                     }}>
                         <button
                             className="reset-btn"
-                            onClick={localGame.resetGame}
+                            onClick={handleNewGameRequest}
                             style={{
                                 pointerEvents: 'auto',
                                 background: '#D97706',
@@ -462,6 +472,75 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                                 </button>
                                 <button
                                     onClick={() => setShowExitModal(false)}
+                                    style={{
+                                        flex: 1,
+                                        padding: '0.75rem',
+                                        borderRadius: '0.75rem',
+                                        backgroundColor: '#D97706', // Amber
+                                        color: 'white',
+                                        fontWeight: 700,
+                                        border: 'none',
+                                        fontSize: '1rem',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* New Game Confirmation Modal */}
+                {showNewGameModal && (
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundColor: 'rgba(0,0,0,0.85)',
+                        zIndex: 100,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backdropFilter: 'blur(4px)'
+                    }}>
+                        <div style={{
+                            width: '85%',
+                            backgroundColor: '#18181B',
+                            border: '1px solid #27272A',
+                            borderRadius: '1rem',
+                            padding: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '1.5rem',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
+                        }}>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: '#FAFAFA', textAlign: 'center' }}>
+                                Start a new game?
+                            </h3>
+                            <p style={{ fontSize: '0.9rem', color: '#A1A1AA', textAlign: 'center', margin: '-0.5rem 0 0 0' }}>
+                                Current progress will be lost.
+                            </p>
+
+                            <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+                                <button
+                                    onClick={confirmNewGame}
+                                    style={{
+                                        flex: 1,
+                                        padding: '0.75rem',
+                                        borderRadius: '0.75rem',
+                                        backgroundColor: '#EF4444', // Red
+                                        color: 'white',
+                                        fontWeight: 700,
+                                        border: 'none',
+                                        fontSize: '1rem',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    onClick={() => setShowNewGameModal(false)}
                                     style={{
                                         flex: 1,
                                         padding: '0.75rem',
