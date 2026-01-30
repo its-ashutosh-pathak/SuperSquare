@@ -96,6 +96,35 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
     };
 
 
+    const formatNameForDisplay = (text: string | null | undefined) => {
+        if (!text) return "";
+        let cleanText = text.slice(0, 15);
+
+        // Split by space
+        if (cleanText.includes(' ')) {
+            const parts = cleanText.split(' ');
+            return (
+                <>
+                    {parts[0]}
+                    <br />
+                    {parts.slice(1).join(' ')}
+                </>
+            );
+        }
+
+        // Split > 8 chars
+        if (cleanText.length > 8) {
+            return (
+                <>
+                    {cleanText.slice(0, 8)}
+                    <br />
+                    {cleanText.slice(8)}
+                </>
+            );
+        }
+        return cleanText;
+    };
+
     const handleMove = (mr: number, mc: number, sr: number, sc: number) => {
         if (!isOnline) {
             localGame.makeMove(mr, mc, sr, sc);
@@ -229,47 +258,51 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                     width: '100%'
                 }}>
                     {isOnline && mp.opponentName && (
-                        <div style={{ display: 'flex', gap: '0.5rem', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', gap: '0.05rem', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                             {/* Opponent (Left) */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'flex-end' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', maxWidth: '30vw', overflow: 'hidden' }}>
-                                    <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#FAFAFA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'right' }}>
-                                        {mp.opponentName}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.225rem' }}>
+                                {/* Text Info */}
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: '5rem' }}>
+                                    <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#FAFAFA', textAlign: 'right', lineHeight: '1.2' }}>
+                                        {formatNameForDisplay(mp.opponentName)}
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#71717A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'right' }}>
-                                        @{mp.opponentUsername}
+                                    <div style={{ fontSize: '0.75rem', color: '#71717A', textAlign: 'right' }}>
+                                        @{formatNameForDisplay(mp.opponentUsername)}
                                     </div>
                                 </div>
-                                <div style={{ width: '3.5rem', height: '3.5rem', flexShrink: 0, borderRadius: '50%', overflow: 'hidden', backgroundColor: '#18181B', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #71717A', boxShadow: '0 0 10px rgba(113, 113, 122, 0.5)' }}>
+                                {/* Profile Pic */}
+                                <div style={{ width: '5rem', height: '5rem', borderRadius: '50%', overflow: 'hidden', backgroundColor: '#18181B', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #71717A', boxShadow: '0 0 15px rgba(113, 113, 122, 0.5)', flexShrink: 0 }}>
                                     {mp.opponentProfilePicture ? (
                                         <img src={mp.opponentProfilePicture} alt={mp.opponentName} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     ) : (
-                                        <span style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FAFAFA' }}>
+                                        <span style={{ fontSize: '2.25rem', fontWeight: 700, color: '#FAFAFA' }}>
                                             {mp.opponentName?.charAt(0).toUpperCase() || 'I'}
                                         </span>
                                     )}
                                 </div>
                             </div>
 
-                            <img src="/vs-icon.png" alt="VS" style={{ width: '3rem', height: '3rem', objectFit: 'contain', flexShrink: 0 }} />
+                            <img src="/vs-icon.png" alt="VS" style={{ width: '5rem', height: '5rem', objectFit: 'contain', margin: '0 0.25rem', flexShrink: 0 }} />
 
                             {/* You (Right) */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'flex-start' }}>
-                                <div style={{ width: '3.5rem', height: '3.5rem', flexShrink: 0, borderRadius: '50%', overflow: 'hidden', backgroundColor: '#18181B', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #FACC15', boxShadow: '0 0 10px rgba(250, 204, 21, 0.5)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.225rem' }}>
+                                {/* Profile Pic */}
+                                <div style={{ width: '5rem', height: '5rem', borderRadius: '50%', overflow: 'hidden', backgroundColor: '#18181B', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #FACC15', boxShadow: '0 0 15px rgba(250, 204, 21, 0.5)', flexShrink: 0 }}>
                                     {user?.profilePicture ? (
                                         <img src={user.profilePicture} alt="You" referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     ) : (
-                                        <span style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FAFAFA' }}>
+                                        <span style={{ fontSize: '2.25rem', fontWeight: 700, color: '#FAFAFA' }}>
                                             {user?.name?.charAt(0).toUpperCase() || 'U'}
                                         </span>
                                     )}
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '30vw', overflow: 'hidden' }}>
-                                    <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#FAFAFA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'left' }}>
-                                        {user?.name}
+                                {/* Text Info */}
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: '5rem' }}>
+                                    <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#FAFAFA', textAlign: 'left', lineHeight: '1.2' }}>
+                                        {formatNameForDisplay(user?.name)}
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#71717A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'left' }}>
-                                        @{user?.username}
+                                    <div style={{ fontSize: '0.75rem', color: '#71717A', textAlign: 'left' }}>
+                                        @{formatNameForDisplay(user?.username)}
                                     </div>
                                 </div>
                             </div>
