@@ -929,8 +929,10 @@ const OnlineLobby: React.FC = () => {
                                         <div
                                             onClick={() => fileInputRef.current?.click()}
                                             style={{
-                                                width: '9rem',
-                                                height: '9rem',
+                                                width: 'min(9rem, 35vw)', // Responsive width
+                                                height: 'min(9rem, 35vw)', // Responsive height (keep aspect ratio if container was div, but here explicit)
+                                                // Actually min(9rem, 35vw) might make height != width if vw changes? 
+                                                // No, both eval same at any instant.
                                                 borderRadius: '50%',
                                                 backgroundColor: '#18181B',
                                                 display: 'flex',
@@ -940,7 +942,8 @@ const OnlineLobby: React.FC = () => {
                                                 boxShadow: '0 0 20px rgba(250, 204, 21, 0.15)',
                                                 cursor: 'pointer',
                                                 position: 'relative',
-                                                overflow: 'hidden'
+                                                overflow: 'hidden',
+                                                flexShrink: 0
                                             }}>
                                             {/* Hidden Input */}
                                             <input
@@ -959,7 +962,7 @@ const OnlineLobby: React.FC = () => {
                                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                 />
                                             ) : (
-                                                <span style={{ fontSize: '3.5rem', color: '#FAFAFA', fontWeight: 700 }}>
+                                                <span style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', color: '#FAFAFA', fontWeight: 700 }}>
                                                     {user?.name?.charAt(0).toUpperCase() || user?.username?.charAt(0).toUpperCase()}
                                                 </span>
                                             )}
@@ -986,18 +989,18 @@ const OnlineLobby: React.FC = () => {
                                         </div>
 
                                         {/* User Info - Centered */}
-                                        <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                                            <div style={{ fontSize: '1rem', color: '#FAFAFA', fontWeight: 500 }}>
+                                        <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '0.35rem', width: '100%', maxWidth: '300px', padding: '0 1rem' }}>
+                                            <div style={{ fontSize: '1rem', color: '#FAFAFA', fontWeight: 500, display: 'flex', justifyContent: 'space-between' }}>
                                                 <span style={{ color: '#A1A1AA', fontWeight: 400 }}>Name: </span>
-                                                {user?.name || "N/A"}
+                                                <span style={{ textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>{user?.name || "N/A"}</span>
                                             </div>
-                                            <div style={{ fontSize: '1rem', color: '#FAFAFA', fontWeight: 500 }}>
+                                            <div style={{ fontSize: '1rem', color: '#FAFAFA', fontWeight: 500, display: 'flex', justifyContent: 'space-between' }}>
                                                 <span style={{ color: '#A1A1AA', fontWeight: 400 }}>User ID: </span>
-                                                {user?.username}
+                                                <span style={{ textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>@{user?.username}</span>
                                             </div>
-                                            <div style={{ fontSize: '1rem', color: '#FAFAFA', fontWeight: 500 }}>
+                                            <div style={{ fontSize: '1rem', color: '#FAFAFA', fontWeight: 500, display: 'flex', justifyContent: 'space-between' }}>
                                                 <span style={{ color: '#A1A1AA', fontWeight: 400 }}>Contact: </span>
-                                                {user?.phone || user?.email || "N/A"}
+                                                <span style={{ textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>{user?.phone || user?.email || "N/A"}</span>
                                             </div>
                                         </div>
 
@@ -1005,12 +1008,11 @@ const OnlineLobby: React.FC = () => {
                                         <div style={{
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: '2rem',
+                                            justifyContent: 'space-evenly', // Changed from center gap to space-evenly
                                             marginTop: '0rem',
                                             paddingTop: '1rem',
                                             borderTop: '1px solid #27272A',
                                             width: '100%',
-                                            justifyContent: 'center'
                                         }}>
                                             <div style={{ textAlign: 'center' }}>
                                                 <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FACC15' }}>{user?.gamesPlayed || 0}</div>
@@ -1030,7 +1032,7 @@ const OnlineLobby: React.FC = () => {
                                     </CardContent>
                                 </Card>
 
-                                <Button onClick={handleLogout} style={{ ...styles.actionButton, backgroundColor: '#EF4444', marginTop: '1rem', boxShadow: 'none' }}>
+                                <Button onClick={handleLogout} style={{ ...styles.actionButton, backgroundColor: '#EF4444', marginTop: '0.5rem', boxShadow: 'none' }}>
                                     Logout
                                 </Button>
                             </>
