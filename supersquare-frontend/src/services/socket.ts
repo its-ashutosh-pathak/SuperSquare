@@ -45,7 +45,7 @@ class SocketService {
 
     connect(userId: string) {
         // In dev, assuming localhost:3000. In prod, use relative or env var
-        this.socket = io('http://localhost:3000'); // Adjust for prod
+        this.socket = io(import.meta.env.VITE_API_URL || 'http://localhost:3000'); // Adjust for prod
 
         this.socket.on('connect', () => {
             console.log('Connected to server, logging in...');

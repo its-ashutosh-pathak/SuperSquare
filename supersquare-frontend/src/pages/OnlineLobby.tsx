@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'; // Added useEffect
+import api from '../services/api';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { motion } from 'framer-motion';
@@ -94,18 +95,12 @@ const OnlineLobby: React.FC = () => {
             const compressedBase64 = await compressImage(file);
 
             // 4. Upload
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/auth/profile-picture', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ image: compressedBase64 })
-            });
+            const response = await api.put('/api/auth/profile-picture', { image: compressedBase64 });
+            // api.put returns response object, response.data is the body
 
-            if (response.ok) {
-                const data = await response.json();
+
+            if (response.status === 200) {
+                const data = response.data;
                 if (user) {
                     login({ ...user, profilePicture: data.profilePicture });
                 }
@@ -168,12 +163,11 @@ const OnlineLobby: React.FC = () => {
                     // Public endpoint, no token needed if configured public, but strict mode might require it.
                     // Let's try without Authorization first as per route definition attempt, 
                     // BUT I commented out the public one and seemingly likely went with protected or public?
-                    // Previous step I added: router.get('/leaderboard', getLeaderboard); which is PUBLIC.
                     // But to be safe and consistent with "Offline Lobby is protected" context (though this is OnlineLobby),
                     // I'll send token if available.
-                    const res = await fetch('http://localhost:3000/api/auth/leaderboard');
-                    if (res.ok) {
-                        const data = await res.json();
+                    const res = await api.get('/api/auth/leaderboard');
+                    if (res.status === 200) {
+                        const data = res.data;
                         setLeaderboard(data.users || []);
                     }
                 } catch (e) {
