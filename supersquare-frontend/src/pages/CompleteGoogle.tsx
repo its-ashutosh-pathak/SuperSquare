@@ -35,7 +35,7 @@ const CompleteGoogle: React.FC = () => {
             // Actually, I should check auth.service.ts next.
             // For now assuming I will update service to accept (name, username, token)
             await authService.completeGoogleSignup(name, username, token); // Changed args
-            const me = await authService.getMe(); // Re-fetch or rely on return? Service usually returns user.
+            // await authService.getMe(); // Removed unused call
             // Relying on service internal token handling or updated return.
             // Let's assume completeGoogleSignup returns { token, user } like login.
 

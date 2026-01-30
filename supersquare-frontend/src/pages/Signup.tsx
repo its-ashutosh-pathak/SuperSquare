@@ -21,7 +21,6 @@ const Signup: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     // State
-    const [step, setStep] = useState<'DETAILS' | 'OTP' | 'VERIFIED'>('DETAILS');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
@@ -37,7 +36,6 @@ const Signup: React.FC = () => {
         try {
             await authService.requestOtp(identifier, 'signup');
             setOtpSent(true);
-            setStep('OTP');
         } catch (e: any) {
             setError(e.response?.data?.message || "Failed to send OTP");
         } finally {
@@ -51,7 +49,6 @@ const Signup: React.FC = () => {
         try {
             await authService.verifyOtp(identifier, otp, 'signup');
             setVerified(true);
-            setStep('VERIFIED');
         } catch (e: any) {
             setError("Invalid OTP");
         } finally {
