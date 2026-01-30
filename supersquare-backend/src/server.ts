@@ -748,24 +748,22 @@ io.on('connection', (socket: Socket) => {
             if (user.currentRoomId) {
                 const room = state.rooms.get(user.currentRoomId);
                 if (room) {
-                    if (room.timer) clearTimeout(room.timer); // Clear timer on disconnect
-
+                    // Identify opponent first
                     const opponentId = room.players.X === user.id ? room.players.O : room.players.X;
+
+                    // Emit specific event for UI toast if needed, but GAME_OVER is key for win
                     if (opponentId) {
                         const opponent = state.getUser(opponentId);
                         if (opponent && opponent.socketId) {
                             io.to(opponent.socketId).emit('OPPONENT_DISCONNECTED');
-
-                            // Treat as win for opponent?
-                            // User "User Disconnected" usually means immediate win for opponent.
-                            // Let's update stats for opponent win? 
-                            // User prompt says "If timer reaches 0...". Disconnect is implicit forfeit.
-                            // Let's count it as a win.
-                            User.updateOne({ username: opponentId }, { $inc: { gamesPlayed: 1, wins: 1, elo: 10 } }).exec();
-                            User.updateOne({ username: user.id }, { $inc: { gamesPlayed: 1, losses: 1, elo: -10 } }).exec();
                         }
+
+                        // Declare opponent as winner
+                        handleGameOver(user.currentRoomId, opponentId, false, 'DISCONNECT');
+                    } else {
+                        // No opponent? Just close room
+                        state.deleteRoom(user.currentRoomId);
                     }
-                    state.deleteRoom(user.currentRoomId);
                 }
             }
 

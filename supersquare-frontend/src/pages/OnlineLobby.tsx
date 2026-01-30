@@ -990,17 +990,17 @@ const OnlineLobby: React.FC = () => {
 
                                         {/* User Info - Centered */}
                                         <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '0.35rem', width: '100%', maxWidth: '300px', padding: '0 1rem' }}>
-                                            <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, marginRight: '0.5rem' }}>Name: </span>
-                                                <span style={{ textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>{user?.name || "N/A"}</span>
+                                            <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', alignItems: 'center' }}>
+                                                <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, width: '4.5rem' }}>Name: </span>
+                                                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 'calc(100% - 4.5rem)' }}>{user?.name || "N/A"}</span>
                                             </div>
-                                            <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, marginRight: '0.5rem' }}>User ID: </span>
-                                                <span style={{ textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>@{user?.username}</span>
+                                            <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', alignItems: 'center' }}>
+                                                <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, width: '4.5rem' }}>User ID: </span>
+                                                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 'calc(100% - 4.5rem)' }}>@{user?.username}</span>
                                             </div>
-                                            <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, marginRight: '0.5rem' }}>Contact: </span>
-                                                <span style={{ textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>{user?.phone || user?.email || "N/A"}</span>
+                                            <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', alignItems: 'center' }}>
+                                                <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, width: '4.5rem' }}>Contact: </span>
+                                                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 'calc(100% - 4.5rem)' }}>{user?.phone || user?.email || "N/A"}</span>
                                             </div>
                                         </div>
 
