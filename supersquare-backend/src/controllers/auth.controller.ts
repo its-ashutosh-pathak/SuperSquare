@@ -298,7 +298,8 @@ export const resetPassword = async (req: Request, res: Response) => {
 // --- GOOGLE AUTH ---
 export const googleAuth = (req: Request, res: Response) => {
     const mode = req.query.mode || 'login'; // 'login' or 'signup'
-    const state = encodeURIComponent(JSON.stringify({ mode }));
+    const platform = req.query.platform || 'web'; // 'web' or 'android'
+    const state = encodeURIComponent(JSON.stringify({ mode, platform }));
 
     const apiUrl = process.env.API_URL || 'http://localhost:3000';
     const redirectUri = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${apiUrl}/api/auth/google/callback&response_type=code&scope=profile email&state=${state}`;
@@ -312,14 +313,22 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         // Parse State
         let mode = 'login';
+        let platform = 'web';
         try {
             if (state) {
                 const parsed = JSON.parse(decodeURIComponent(state as string));
                 if (parsed.mode) mode = parsed.mode;
+                if (parsed.platform) platform = parsed.platform;
             }
         } catch (e) {
             console.log("State parse error", e);
         }
+
+        // Determine Base Redirect URL
+        const isAndroid = platform === 'android';
+        const clientUrl = isAndroid
+            ? 'com.supersquare.game://auth'
+            : (process.env.CLIENT_URL || 'http://localhost:5173');
 
         // 1. Exchange code for token
         const { data } = await axios.post('https://oauth2.googleapis.com/token', {
@@ -339,30 +348,10 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         const email = profile.email;
         const googleId = profile.id;
-        // Google picture URL comes with =s96-c by default. Try to get higher quality.
         let picture = profile.picture;
-        console.log("Original Google Picture URL:", picture);
 
-        if (picture) {
-            try {
-                // Try modifications to get 400px
-                let highQualPic = picture;
-                if (picture.includes('=s')) {
-                    highQualPic = picture.replace(/=s\d+(-c)?/g, '=s400-c');
-                } else {
-                    // If no size param, append it? Usually better to leave it or try appending
-                    // highQualPic = picture + '=s400-c'; // Risky if structure is unknown
-                }
-
-                // VERIFY the high quality URL works
-                console.log("Testing High Quality URL:", highQualPic);
-                await axios.head(highQualPic);
-                picture = highQualPic; // It works!
-                console.log("High Quality URL verified and accepted.");
-            } catch (err: any) {
-                console.warn("High Quality Image verify failed, falling back to original:", err.message || err);
-                // picture remains the original low-qual one
-            }
+        if (picture && picture.includes('=s')) {
+            picture = picture.replace(/=s\d+(-c)?/g, '=s400-c');
         }
 
         // 3. Find or Create User
@@ -371,13 +360,13 @@ export const googleCallback = async (req: Request, res: Response) => {
         if (!user) {
             // CHECK MODE: If Login mode, REJECT new users
             if (mode === 'login') {
-                return res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/login?error=NoAccountFoundSignupRequired`);
+                return res.redirect(`${clientUrl}/login?error=NoAccountFoundSignupRequired`);
             }
 
             // New Google User (Signup Mode) -> Redirect to Frontend to complete profile
             const tempPayload = { googleId, email, picture, isNewGoogleUser: true };
             const tempToken = jwt.sign(tempPayload, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-            return res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/complete-google?token=${tempToken}&email=${email}`);
+            return res.redirect(`${clientUrl}/complete-google?token=${tempToken}&email=${email}`);
         }
 
         // Existing User - Link & Login
@@ -387,11 +376,15 @@ export const googleCallback = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET as string, { expiresIn: '7d' });
-        res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/auth-success?token=${token}`);
+        res.redirect(`${clientUrl}/auth-success?token=${token}`);
 
     } catch (e: any) {
         console.error("Google Callback Error", e.response?.data || e.message);
-        res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/login?error=GoogleAuthFailed`);
+        const clientUrl = (req.query.state && JSON.parse(decodeURIComponent(req.query.state as string)).platform === 'android')
+            ? 'com.supersquare.game://auth'
+            : (process.env.CLIENT_URL || 'http://localhost:5173');
+
+        res.redirect(`${clientUrl}/login?error=GoogleAuthFailed`);
     }
 };
 

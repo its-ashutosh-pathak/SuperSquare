@@ -1,0 +1,559 @@
+Initialized native services in: C:\Users\ashutosh pathak\.gradle\native
+Initialized jansi services in: C:\Users\ashutosh pathak\.gradle\native
+Found daemon DaemonInfo{pid=27192, address=[e726c602-0f76-4740-90b7-45672c9c0b11 port:51028, addresses:[/127.0.0.1]], state=Idle, lastBusy=1769785053973, context=DefaultDaemonContext[uid=0cb9af91-1378-4941-a9bc-fc08d073da24,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\ashutosh pathak\.gradle\daemon,pid=27192,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-Xmx1536m,-Dfile.encoding=UTF-8,-Duser.country=IN,-Duser.language=en,-Duser.variant]} however its context does not match the desired criteria.
+At least one daemon option is different.
+Wanted: DaemonRequestContext{jvmCriteria=C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot (no JDK specified, using current Java home), daemonOpts=[-Xmx1536m, -Dfile.encoding=windows-1252, -Duser.country=IN, -Duser.language=en, -Duser.variant], applyInstrumentationAgent=true, nativeServicesMode=ENABLED, priority=NORMAL}
+Actual: DefaultDaemonContext[uid=0cb9af91-1378-4941-a9bc-fc08d073da24,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\ashutosh pathak\.gradle\daemon,pid=27192,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-Xmx1536m,-Dfile.encoding=UTF-8,-Duser.country=IN,-Duser.language=en,-Duser.variant]
+
+  Looking for a different daemon...
+The client will now receive all logging from the daemon (pid: 23316). The daemon log file: C:\Users\ashutosh pathak\.gradle\daemon\8.14.3\daemon-23316.out.log
+Starting 3rd build in daemon [uptime: 1 mins 43.627 secs, performance: 100%, GC rate: 0.00/s, heap usage: 0% of 1.5 GiB]
+Using 16 worker leases.
+Now considering [C:\Projects\SuperSquare\supersquare-frontend\android] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'C:\Projects\SuperSquare\supersquare-frontend\android\settings.gradle'.
+Projects loaded. Root project using build file 'C:\Projects\SuperSquare\supersquare-frontend\android\build.gradle'.
+Included projects: [root project 'android', project ':app', project ':capacitor-android', project ':capacitor-app', project ':capacitor-cordova-android-plugins']
+
+> Configure project :
+Evaluating root project 'android' using build file 'C:\Projects\SuperSquare\supersquare-frontend\android\build.gradle'.
+
+> Configure project :app
+Evaluating project ':app' using build file 'C:\Projects\SuperSquare\supersquare-frontend\android\app\build.gradle'.
+Using default execution profile
+google-services.json not found, google-services plugin not applied. Push Notifications won't work
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Configure project :capacitor-android
+Evaluating project ':capacitor-android' using build file 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\build.gradle'.
+Using default execution profile
+
+> Configure project :capacitor-app
+Evaluating project ':capacitor-app' using build file 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\build.gradle'.
+Using default execution profile
+
+> Configure project :capacitor-cordova-android-plugins
+Evaluating project ':capacitor-cordova-android-plugins' using build file 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\build.gradle'.
+Using default execution profile
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+All projects evaluated.
+Task name matched 'assembleDebug'
+Selected primary task 'assembleDebug' from project :
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Tasks to be executed: [task ':app:preBuild', task ':app:preDebugBuild', task ':app:mergeDebugNativeDebugMetadata', task ':app:javaPreCompileDebug', task ':capacitor-android:preBuild', task ':capacitor-android:preDebugBuild', task ':capacitor-android:writeDebugAarMetadata', task ':capacitor-app:preBuild', task ':capacitor-app:preDebugBuild', task ':capacitor-app:writeDebugAarMetadata', task ':capacitor-cordova-android-plugins:preBuild', task ':capacitor-cordova-android-plugins:preDebugBuild', task ':capacitor-cordova-android-plugins:writeDebugAarMetadata', task ':app:checkDebugAarMetadata', task ':capacitor-android:processDebugNavigationResources', task ':capacitor-app:processDebugNavigationResources', task ':capacitor-cordova-android-plugins:processDebugNavigationResources', task ':app:processDebugNavigationResources', task ':app:compileDebugNavigationResources', task ':app:generateDebugResValues', task ':capacitor-android:generateDebugResValues', task ':capacitor-android:generateDebugResources', task ':capacitor-android:packageDebugResources', task ':capacitor-app:generateDebugResValues', task ':capacitor-app:generateDebugResources', task ':capacitor-app:packageDebugResources', task ':capacitor-cordova-android-plugins:generateDebugResValues', task ':capacitor-cordova-android-plugins:generateDebugResources', task ':capacitor-cordova-android-plugins:packageDebugResources', task ':app:mapDebugSourceSetPaths', task ':app:generateDebugResources', task ':app:mergeDebugResources', task ':app:packageDebugResources', task ':app:parseDebugLocalResources', task ':app:createDebugCompatibleScreenManifests', task ':app:extractDeepLinksDebug', task ':capacitor-android:extractDeepLinksDebug', task ':capacitor-android:processDebugManifest', task ':capacitor-app:extractDeepLinksDebug', task ':capacitor-app:processDebugManifest', task ':capacitor-cordova-android-plugins:extractDeepLinksDebug', task ':capacitor-cordova-android-plugins:processDebugManifest', task ':app:processDebugMainManifest', task ':app:processDebugManifest', task ':app:processDebugManifestForPackage', task ':capacitor-android:compileDebugLibraryResources', task ':capacitor-android:parseDebugLocalResources', task ':capacitor-android:generateDebugRFile', task ':capacitor-app:compileDebugLibraryResources', task ':capacitor-app:parseDebugLocalResources', task ':capacitor-app:generateDebugRFile', task ':capacitor-cordova-android-plugins:compileDebugLibraryResources', task ':capacitor-cordova-android-plugins:parseDebugLocalResources', task ':capacitor-cordova-android-plugins:generateDebugRFile', task ':app:processDebugResources', task ':capacitor-android:javaPreCompileDebug', task ':capacitor-android:compileDebugJavaWithJavac', task ':capacitor-android:bundleLibCompileToJarDebug', task ':capacitor-app:javaPreCompileDebug', task ':capacitor-app:compileDebugJavaWithJavac', task ':capacitor-app:bundleLibCompileToJarDebug', task ':capacitor-cordova-android-plugins:javaPreCompileDebug', task ':capacitor-cordova-android-plugins:compileDebugJavaWithJavac', task ':capacitor-cordova-android-plugins:bundleLibCompileToJarDebug', task ':app:compileDebugJavaWithJavac', task ':app:mergeDebugShaders', task ':app:compileDebugShaders', task ':app:generateDebugAssets', task ':capacitor-android:mergeDebugShaders', task ':capacitor-android:compileDebugShaders', task ':capacitor-android:generateDebugAssets', task ':capacitor-android:mergeDebugAssets', task ':capacitor-app:mergeDebugShaders', task ':capacitor-app:compileDebugShaders', task ':capacitor-app:generateDebugAssets', task ':capacitor-app:mergeDebugAssets', task ':capacitor-cordova-android-plugins:mergeDebugShaders', task ':capacitor-cordova-android-plugins:compileDebugShaders', task ':capacitor-cordova-android-plugins:generateDebugAssets', task ':capacitor-cordova-android-plugins:mergeDebugAssets', task ':app:mergeDebugAssets', task ':app:compressDebugAssets', task ':capacitor-app:bundleLibRuntimeToJarDebug', task ':capacitor-android:bundleLibRuntimeToJarDebug', task ':capacitor-cordova-android-plugins:bundleLibRuntimeToJarDebug', task ':app:desugarDebugFileDependencies', task ':app:dexBuilderDebug', task ':app:mergeDebugGlobalSynthetics', task ':app:processDebugJavaRes', task ':capacitor-android:processDebugJavaRes', task ':capacitor-app:processDebugJavaRes', task ':capacitor-cordova-android-plugins:processDebugJavaRes', task ':app:mergeDebugJavaResource', task ':app:checkDebugDuplicateClasses', task ':app:mergeExtDexDebug', task ':capacitor-app:bundleLibRuntimeToDirDebug', task ':capacitor-android:bundleLibRuntimeToDirDebug', task ':capacitor-cordova-android-plugins:bundleLibRuntimeToDirDebug', task ':app:mergeLibDexDebug', task ':app:mergeProjectDexDebug', task ':app:mergeDebugJniLibFolders', task ':capacitor-android:mergeDebugJniLibFolders', task ':capacitor-android:mergeDebugNativeLibs', task ':capacitor-android:copyDebugJniLibsProjectOnly', task ':capacitor-app:mergeDebugJniLibFolders', task ':capacitor-app:mergeDebugNativeLibs', task ':capacitor-app:copyDebugJniLibsProjectOnly', task ':capacitor-cordova-android-plugins:mergeDebugJniLibFolders', task ':capacitor-cordova-android-plugins:mergeDebugNativeLibs', task ':capacitor-cordova-android-plugins:copyDebugJniLibsProjectOnly', task ':app:mergeDebugNativeLibs', task ':app:stripDebugDebugSymbols', task ':app:validateSigningDebug', task ':app:writeDebugAppMetadata', task ':app:writeDebugSigningConfigVersions', task ':app:packageDebug', task ':app:createDebugApkListingFileRedirect', task ':app:assembleDebug', task ':capacitor-android:checkDebugAarMetadata', task ':capacitor-android:stripDebugDebugSymbols', task ':capacitor-android:copyDebugJniLibsProjectAndLocalJars', task ':capacitor-android:extractDebugAnnotations', task ':capacitor-android:extractDeepLinksForAarDebug', task ':capacitor-android:mergeDebugGeneratedProguardFiles', task ':capacitor-android:mergeDebugConsumerProguardFiles', task ':capacitor-android:prepareDebugArtProfile', task ':capacitor-android:prepareLintJarForPublish', task ':capacitor-android:mergeDebugJavaResource', task ':capacitor-android:syncDebugLibJars', task ':capacitor-android:bundleDebugAar', task ':capacitor-android:assembleDebug', task ':capacitor-app:checkDebugAarMetadata', task ':capacitor-app:stripDebugDebugSymbols', task ':capacitor-app:copyDebugJniLibsProjectAndLocalJars', task ':capacitor-app:extractDebugAnnotations', task ':capacitor-app:extractDeepLinksForAarDebug', task ':capacitor-app:mergeDebugGeneratedProguardFiles', task ':capacitor-app:mergeDebugConsumerProguardFiles', task ':capacitor-app:prepareDebugArtProfile', task ':capacitor-app:prepareLintJarForPublish', task ':capacitor-app:mergeDebugJavaResource', task ':capacitor-app:syncDebugLibJars', task ':capacitor-app:bundleDebugAar', task ':capacitor-app:assembleDebug', task ':capacitor-cordova-android-plugins:checkDebugAarMetadata', task ':capacitor-cordova-android-plugins:stripDebugDebugSymbols', task ':capacitor-cordova-android-plugins:copyDebugJniLibsProjectAndLocalJars', task ':capacitor-cordova-android-plugins:extractDebugAnnotations', task ':capacitor-cordova-android-plugins:extractDeepLinksForAarDebug', task ':capacitor-cordova-android-plugins:mergeDebugGeneratedProguardFiles', task ':capacitor-cordova-android-plugins:mergeDebugConsumerProguardFiles', task ':capacitor-cordova-android-plugins:prepareDebugArtProfile', task ':capacitor-cordova-android-plugins:prepareLintJarForPublish', task ':capacitor-cordova-android-plugins:mergeDebugJavaResource', task ':capacitor-cordova-android-plugins:syncDebugLibJars', task ':capacitor-cordova-android-plugins:bundleDebugAar', task ':capacitor-cordova-android-plugins:assembleDebug']
+Tasks that were excluded: []
+work action Parameters of IdentityTransform (Thread[Execution worker,5,main]) started.
+work action Parameters of DexingNoClasspathTransform (Thread[Execution worker,5,main]) started.
+work action Parameters of DexingOutputSplitTransform (Thread[Execution worker Thread 14,5,main]) started.
+work action Parameters of ClassesDirToClassesTransform (Thread[Execution worker Thread 14,5,main]) started.
+work action Parameters of DexingOutputSplitTransform (Thread[Execution worker Thread 14,5,main]) started.
+Resolve mutations for :app:preBuild (Thread[Execution worker Thread 14,5,main]) started.
+:app:preBuild (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:preBuild UP-TO-DATE
+Skipping task ':app:preBuild' as it has no actions.
+Resolve mutations for :app:preDebugBuild (Thread[Execution worker Thread 14,5,main]) started.
+:app:preDebugBuild (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:preDebugBuild UP-TO-DATE
+Skipping task ':app:preDebugBuild' as it has no actions.
+Resolve mutations for :app:mergeDebugNativeDebugMetadata (Thread[Execution worker Thread 14,5,main]) started.
+:app:mergeDebugNativeDebugMetadata (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+Skipping task ':app:mergeDebugNativeDebugMetadata' as it has no source files and no previous output files.
+Resolve mutations for :app:javaPreCompileDebug (Thread[Execution worker Thread 14,5,main]) started.
+:app:javaPreCompileDebug (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:javaPreCompileDebug UP-TO-DATE
+Caching disabled for task ':app:javaPreCompileDebug' because:
+  Build cache is disabled
+Skipping task ':app:javaPreCompileDebug' as it is up-to-date.
+Resolve mutations for :capacitor-android:preBuild (Thread[Execution worker Thread 14,5,main]) started.
+:capacitor-android:preBuild (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :capacitor-android:preBuild UP-TO-DATE
+Skipping task ':capacitor-android:preBuild' as it has no actions.
+Resolve mutations for :capacitor-android:preDebugBuild (Thread[Execution worker Thread 14,5,main]) started.
+:capacitor-android:preDebugBuild (Thread[Execution worker Thread 5,5,main]) started.
+
+> Task :capacitor-android:preDebugBuild UP-TO-DATE
+Skipping task ':capacitor-android:preDebugBuild' as it has no actions.
+Resolve mutations for :capacitor-android:writeDebugAarMetadata (Thread[Execution worker Thread 5,5,main]) started.
+:capacitor-android:writeDebugAarMetadata (Thread[Execution worker Thread 5,5,main]) started.
+
+> Task :capacitor-android:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':capacitor-android:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':capacitor-android:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :capacitor-android) (Thread[Execution worker Thread 5,5,main]) started.
+Resolve mutations for :capacitor-app:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+:capacitor-app:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :capacitor-app:preBuild UP-TO-DATE
+Skipping task ':capacitor-app:preBuild' as it has no actions.
+Resolve mutations for :capacitor-app:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:capacitor-app:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :capacitor-app:preDebugBuild UP-TO-DATE
+Skipping task ':capacitor-app:preDebugBuild' as it has no actions.
+Resolve mutations for :capacitor-app:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+:capacitor-app:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :capacitor-app:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':capacitor-app:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':capacitor-app:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :capacitor-app) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:preBuild (Thread[Execution worker Thread 6,5,main]) started.
+:capacitor-cordova-android-plugins:preBuild (Thread[Execution worker Thread 6,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:preBuild UP-TO-DATE
+Skipping task ':capacitor-cordova-android-plugins:preBuild' as it has no actions.
+Resolve mutations for :capacitor-cordova-android-plugins:preDebugBuild (Thread[Execution worker Thread 6,5,main]) started.
+:capacitor-cordova-android-plugins:preDebugBuild (Thread[Execution worker Thread 9,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:preDebugBuild UP-TO-DATE
+Skipping task ':capacitor-cordova-android-plugins:preDebugBuild' as it has no actions.
+Resolve mutations for :capacitor-cordova-android-plugins:writeDebugAarMetadata (Thread[Execution worker Thread 9,5,main]) started.
+:capacitor-cordova-android-plugins:writeDebugAarMetadata (Thread[Execution worker Thread 9,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':capacitor-cordova-android-plugins:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :capacitor-cordova-android-plugins) (Thread[Execution worker Thread 9,5,main]) started.
+Resolve mutations for :app:checkDebugAarMetadata (Thread[Execution worker Thread 9,5,main]) started.
+:app:checkDebugAarMetadata (Thread[Execution worker Thread 9,5,main]) started.
+
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Caching disabled for task ':app:checkDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:checkDebugAarMetadata' as it is up-to-date.
+Resolve mutations for :capacitor-android:processDebugNavigationResources (Thread[Execution worker Thread 15,5,main]) started.
+:capacitor-android:processDebugNavigationResources (Thread[Execution worker Thread 15,5,main]) started.
+
+> Task :capacitor-android:processDebugNavigationResources UP-TO-DATE
+Caching disabled for task ':capacitor-android:processDebugNavigationResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:processDebugNavigationResources' as it is up-to-date.
+work action resolve debug (project :capacitor-android) (Thread[Execution worker Thread 15,5,main]) started.
+Resolve mutations for :capacitor-app:processDebugNavigationResources (Thread[Execution worker Thread 15,5,main]) started.
+:capacitor-app:processDebugNavigationResources (Thread[Execution worker Thread 15,5,main]) started.
+
+> Task :capacitor-app:processDebugNavigationResources UP-TO-DATE
+Caching disabled for task ':capacitor-app:processDebugNavigationResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:processDebugNavigationResources' as it is up-to-date.
+work action resolve debug (project :capacitor-app) (Thread[Execution worker Thread 15,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:processDebugNavigationResources (Thread[Execution worker Thread 14,5,main]) started.
+:capacitor-cordova-android-plugins:processDebugNavigationResources (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:processDebugNavigationResources UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:processDebugNavigationResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:processDebugNavigationResources' as it is up-to-date.
+work action resolve debug (project :capacitor-cordova-android-plugins) (Thread[Execution worker Thread 14,5,main]) started.
+Resolve mutations for :app:processDebugNavigationResources (Thread[Execution worker Thread 14,5,main]) started.
+:app:processDebugNavigationResources (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:processDebugNavigationResources UP-TO-DATE
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Caching disabled for task ':app:processDebugNavigationResources' because:
+  Build cache is disabled
+Skipping task ':app:processDebugNavigationResources' as it is up-to-date.
+Resolve mutations for :app:compileDebugNavigationResources (Thread[Execution worker Thread 14,5,main]) started.
+:app:compileDebugNavigationResources (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+Caching disabled for task ':app:compileDebugNavigationResources' because:
+  Build cache is disabled
+Skipping task ':app:compileDebugNavigationResources' as it is up-to-date.
+Resolve mutations for :app:generateDebugResValues (Thread[Execution worker Thread 14,5,main]) started.
+:app:generateDebugResValues (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :app:generateDebugResValues UP-TO-DATE
+Caching disabled for task ':app:generateDebugResValues' because:
+  Build cache is disabled
+Skipping task ':app:generateDebugResValues' as it is up-to-date.
+Resolve mutations for :capacitor-android:generateDebugResValues (Thread[Execution worker Thread 14,5,main]) started.
+:capacitor-android:generateDebugResValues (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :capacitor-android:generateDebugResValues UP-TO-DATE
+Caching disabled for task ':capacitor-android:generateDebugResValues' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:generateDebugResValues' as it is up-to-date.
+Resolve mutations for :capacitor-android:generateDebugResources (Thread[Execution worker Thread 14,5,main]) started.
+:capacitor-android:generateDebugResources (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :capacitor-android:generateDebugResources UP-TO-DATE
+Caching disabled for task ':capacitor-android:generateDebugResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:generateDebugResources' as it is up-to-date.
+Resolve mutations for :capacitor-android:packageDebugResources (Thread[Execution worker Thread 14,5,main]) started.
+:capacitor-android:packageDebugResources (Thread[Execution worker Thread 14,5,main]) started.
+
+> Task :capacitor-android:packageDebugResources UP-TO-DATE
+Caching disabled for task ':capacitor-android:packageDebugResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:packageDebugResources' as it is up-to-date.
+work action resolve packageDebugResources (project :capacitor-android) (Thread[Execution worker Thread 14,5,main]) started.
+Resolve mutations for :capacitor-app:generateDebugResValues (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-app:generateDebugResValues (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-app:generateDebugResValues UP-TO-DATE
+Caching disabled for task ':capacitor-app:generateDebugResValues' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:generateDebugResValues' as it is up-to-date.
+Resolve mutations for :capacitor-app:generateDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-app:generateDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-app:generateDebugResources UP-TO-DATE
+Caching disabled for task ':capacitor-app:generateDebugResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:generateDebugResources' as it is up-to-date.
+Resolve mutations for :capacitor-app:packageDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-app:packageDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-app:packageDebugResources UP-TO-DATE
+Caching disabled for task ':capacitor-app:packageDebugResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:packageDebugResources' as it is up-to-date.
+work action resolve packageDebugResources (project :capacitor-app) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:generateDebugResValues (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-cordova-android-plugins:generateDebugResValues (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:generateDebugResValues UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:generateDebugResValues' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:generateDebugResValues' as it is up-to-date.
+Resolve mutations for :capacitor-cordova-android-plugins:generateDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-cordova-android-plugins:generateDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:generateDebugResources UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:generateDebugResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:generateDebugResources' as it is up-to-date.
+Resolve mutations for :capacitor-cordova-android-plugins:packageDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-cordova-android-plugins:packageDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:packageDebugResources UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:packageDebugResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:packageDebugResources' as it is up-to-date.
+work action resolve packageDebugResources (project :capacitor-cordova-android-plugins) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :app:mapDebugSourceSetPaths (Thread[Execution worker Thread 13,5,main]) started.
+:app:mapDebugSourceSetPaths (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Caching disabled for task ':app:mapDebugSourceSetPaths' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:mapDebugSourceSetPaths' as it is up-to-date.
+Resolve mutations for :app:generateDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:app:generateDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:generateDebugResources UP-TO-DATE
+Caching disabled for task ':app:generateDebugResources' because:
+  Build cache is disabled
+Skipping task ':app:generateDebugResources' as it is up-to-date.
+Resolve mutations for :app:mergeDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:app:mergeDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:mergeDebugResources UP-TO-DATE
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Caching disabled for task ':app:mergeDebugResources' because:
+  Build cache is disabled
+Skipping task ':app:mergeDebugResources' as it is up-to-date.
+Resolve mutations for :app:packageDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:app:packageDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:packageDebugResources UP-TO-DATE
+Caching disabled for task ':app:packageDebugResources' because:
+  Build cache is disabled
+Skipping task ':app:packageDebugResources' as it is up-to-date.
+Resolve mutations for :app:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+:app:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:parseDebugLocalResources UP-TO-DATE
+Caching disabled for task ':app:parseDebugLocalResources' because:
+  Build cache is disabled
+Skipping task ':app:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :app:createDebugCompatibleScreenManifests (Thread[Execution worker Thread 13,5,main]) started.
+:app:createDebugCompatibleScreenManifests (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+Caching disabled for task ':app:createDebugCompatibleScreenManifests' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:createDebugCompatibleScreenManifests' as it is up-to-date.
+Resolve mutations for :app:extractDeepLinksDebug (Thread[Execution worker Thread 13,5,main]) started.
+:app:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+Caching disabled for task ':app:extractDeepLinksDebug' because:
+  Build cache is disabled
+Skipping task ':app:extractDeepLinksDebug' as it is up-to-date.
+Resolve mutations for :capacitor-android:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+:capacitor-android:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+
+> Task :capacitor-android:extractDeepLinksDebug UP-TO-DATE
+Caching disabled for task ':capacitor-android:extractDeepLinksDebug' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:extractDeepLinksDebug' as it is up-to-date.
+work action resolve navigation.json (project :capacitor-android) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :capacitor-android:processDebugManifest (Thread[Execution worker,5,main]) started.
+:capacitor-android:processDebugManifest (Thread[Execution worker,5,main]) started.
+
+> Task :capacitor-android:processDebugManifest UP-TO-DATE
+Caching disabled for task ':capacitor-android:processDebugManifest' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:processDebugManifest' as it is up-to-date.
+work action resolve AndroidManifest.xml (project :capacitor-android) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :capacitor-app:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+:capacitor-app:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+
+> Task :capacitor-app:extractDeepLinksDebug UP-TO-DATE
+Caching disabled for task ':capacitor-app:extractDeepLinksDebug' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:extractDeepLinksDebug' as it is up-to-date.
+work action resolve navigation.json (project :capacitor-app) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :capacitor-app:processDebugManifest (Thread[Execution worker,5,main]) started.
+:capacitor-app:processDebugManifest (Thread[Execution worker,5,main]) started.
+
+> Task :capacitor-app:processDebugManifest UP-TO-DATE
+Caching disabled for task ':capacitor-app:processDebugManifest' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:processDebugManifest' as it is up-to-date.
+work action resolve AndroidManifest.xml (project :capacitor-app) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+:capacitor-cordova-android-plugins:extractDeepLinksDebug (Thread[Execution worker,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:extractDeepLinksDebug UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:extractDeepLinksDebug' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:extractDeepLinksDebug' as it is up-to-date.
+work action resolve navigation.json (project :capacitor-cordova-android-plugins) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:processDebugManifest (Thread[Execution worker,5,main]) started.
+:capacitor-cordova-android-plugins:processDebugManifest (Thread[Execution worker,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:processDebugManifest UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:processDebugManifest' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:processDebugManifest' as it is up-to-date.
+work action resolve AndroidManifest.xml (project :capacitor-cordova-android-plugins) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :app:processDebugMainManifest (Thread[Execution worker Thread 13,5,main]) started.
+:app:processDebugMainManifest (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:processDebugMainManifest UP-TO-DATE
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Caching disabled for task ':app:processDebugMainManifest' because:
+  Build cache is disabled
+Skipping task ':app:processDebugMainManifest' as it is up-to-date.
+Resolve mutations for :app:processDebugManifest (Thread[Execution worker Thread 13,5,main]) started.
+:app:processDebugManifest (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:processDebugManifest UP-TO-DATE
+Caching disabled for task ':app:processDebugManifest' because:
+  Build cache is disabled
+Skipping task ':app:processDebugManifest' as it is up-to-date.
+Resolve mutations for :app:processDebugManifestForPackage (Thread[Execution worker Thread 13,5,main]) started.
+:app:processDebugManifestForPackage (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+Custom actions are attached to task ':app:processDebugManifestForPackage'.
+Caching disabled for task ':app:processDebugManifestForPackage' because:
+  Build cache is disabled
+Skipping task ':app:processDebugManifestForPackage' as it is up-to-date.
+Resolve mutations for :capacitor-android:compileDebugLibraryResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-android:compileDebugLibraryResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-android:compileDebugLibraryResources UP-TO-DATE
+Caching disabled for task ':capacitor-android:compileDebugLibraryResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:compileDebugLibraryResources' as it is up-to-date.
+work action resolve out (project :capacitor-android) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-android:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-android:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-android:parseDebugLocalResources UP-TO-DATE
+Caching disabled for task ':capacitor-android:parseDebugLocalResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :capacitor-android:generateDebugRFile (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-android:generateDebugRFile (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-android:generateDebugRFile UP-TO-DATE
+Caching disabled for task ':capacitor-android:generateDebugRFile' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:generateDebugRFile' as it is up-to-date.
+work action resolve package-aware-r.txt (project :capacitor-android) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-app:compileDebugLibraryResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-app:compileDebugLibraryResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-app:compileDebugLibraryResources UP-TO-DATE
+Caching disabled for task ':capacitor-app:compileDebugLibraryResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:compileDebugLibraryResources' as it is up-to-date.
+work action resolve out (project :capacitor-app) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-app:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-app:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-app:parseDebugLocalResources UP-TO-DATE
+Caching disabled for task ':capacitor-app:parseDebugLocalResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :capacitor-app:generateDebugRFile (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-app:generateDebugRFile (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-app:generateDebugRFile UP-TO-DATE
+Caching disabled for task ':capacitor-app:generateDebugRFile' because:
+  Build cache is disabled
+Skipping task ':capacitor-app:generateDebugRFile' as it is up-to-date.
+work action resolve package-aware-r.txt (project :capacitor-app) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:compileDebugLibraryResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-cordova-android-plugins:compileDebugLibraryResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:compileDebugLibraryResources UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:compileDebugLibraryResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:compileDebugLibraryResources' as it is up-to-date.
+work action resolve out (project :capacitor-cordova-android-plugins) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-cordova-android-plugins:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-cordova-android-plugins:parseDebugLocalResources (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:parseDebugLocalResources UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:parseDebugLocalResources' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :capacitor-cordova-android-plugins:generateDebugRFile (Thread[Execution worker Thread 13,5,main]) started.
+:capacitor-cordova-android-plugins:generateDebugRFile (Thread[Execution worker Thread 13,5,main]) started.
+
+> Task :capacitor-cordova-android-plugins:generateDebugRFile UP-TO-DATE
+Caching disabled for task ':capacitor-cordova-android-plugins:generateDebugRFile' because:
+  Build cache is disabled
+Skipping task ':capacitor-cordova-android-plugins:generateDebugRFile' as it is up-to-date.
+work action resolve package-aware-r.txt (project :capacitor-cordova-android-plugins) (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :app:processDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+:app:processDebugResources (Thread[Execution worker Thread 13,5,main]) started.
+Resolve mutations for :capacitor-android:javaPreCompileDebug (Thread[Execution worker Thread 3,5,main]) started.
+:capacitor-android:javaPreCompileDebug (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :capacitor-android:javaPreCompileDebug UP-TO-DATE
+Caching disabled for task ':capacitor-android:javaPreCompileDebug' because:
+  Build cache is disabled
+Skipping task ':capacitor-android:javaPreCompileDebug' as it is up-to-date.
+Resolve mutations for :capacitor-android:compileDebugJavaWithJavac (Thread[Execution worker Thread 3,5,main]) started.
+:capacitor-android:compileDebugJavaWithJavac (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :capacitor-android:compileDebugJavaWithJavac FAILED
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+Custom actions are attached to task ':capacitor-android:compileDebugJavaWithJavac'.
+Caching disabled for task ':capacitor-android:compileDebugJavaWithJavac' because:
+  Build cache is disabled
+Task ':capacitor-android:compileDebugJavaWithJavac' is not up-to-date because:
+  Task has failed previously.
+The input changes require a full rebuild for incremental task ':capacitor-android:compileDebugJavaWithJavac'.
+Compilation mode: in-process compilation
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain 'C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot'.
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\src\debug\java', not found
+Compiling with JDK Java compiler API.
+
+> Task :app:processDebugResources
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\app\android\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\capacitor-cordova-android-plugins\src\main\libs', not found
+file or directory 'C:\Projects\SuperSquare\supersquare-frontend\android\app\libs', not found
+Caching disabled for task ':app:processDebugResources' because:
+  Build cache is disabled
+Task ':app:processDebugResources' is not up-to-date because:
+  Value of input property 'useStableIds' has changed for task ':app:processDebugResources'
+The input changes require a full rebuild for incremental task ':app:processDebugResources'.
+AAPT2 aapt2-8.13.0-13719691-windows Daemon #0: starting
+Aapt output file C:\Projects\SuperSquare\supersquare-frontend\android\app\build\intermediates\linked_resources_binary_format\debug\processDebugResources\linked-resources-binary-format-debug.ap_
+AAPT2 aapt2-8.13.0-13719691-windows Daemon #0: shutdown
+
+[Incubating] Problems report is available at: file:///C:/Projects/SuperSquare/supersquare-frontend/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':capacitor-android:compileDebugJavaWithJavac'.
+> Java compilation initialization error
+    error: invalid source release: 21
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3s
+48 actionable tasks: 2 executed, 46 up-to-date
+Watched directory hierarchies: [C:\Projects\SuperSquare\supersquare-frontend\android]

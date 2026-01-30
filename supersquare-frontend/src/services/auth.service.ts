@@ -1,4 +1,5 @@
 import api from './api';
+import { Capacitor } from '@capacitor/core';
 
 export interface AuthResponse {
     token?: string;
@@ -47,8 +48,13 @@ export const authService = {
     },
 
     googleLogin(mode: 'login' | 'signup' = 'login') {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-        window.location.href = `${apiUrl}/api/auth/google?mode=${mode}`;
+        // Dynamic API URL Logic matching api.ts
+        const isNative = Capacitor.isNativePlatform();
+        const baseUrl = isNative ? 'http://10.0.2.2:3000' : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
+
+        const platform = isNative ? 'android' : 'web';
+
+        window.location.href = `${baseUrl}/api/auth/google?mode=${mode}&platform=${platform}`;
     },
 
     async getMe(): Promise<any> {

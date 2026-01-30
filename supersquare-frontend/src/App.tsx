@@ -1,4 +1,6 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { App as CapacitorApp } from '@capacitor/app';
+import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -12,6 +14,30 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 
 import { MultiplayerProvider } from './context/MultiplayerContext';
 
+// Deep Link Handler
+const AppUrlListener = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        CapacitorApp.addListener('appUrlOpen', (data: any) => {
+            try {
+                // Example url: com.supersquare.game://auth?token=XYZ
+                const url = new URL(data.url);
+                if (url.host === 'auth') {
+                    const token = url.searchParams.get('token');
+                    if (token) {
+                        navigate(`/auth-success?token=${token}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error handling deep link:', error);
+            }
+        });
+    }, [navigate]);
+
+    return null;
+};
+
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     const { isAuthenticated } = useAuth();
@@ -23,6 +49,7 @@ function App() {
     return (
         <AuthProvider>
             <Router>
+                <AppUrlListener />
                 <ErrorBoundary>
                     <MultiplayerProvider>
                         <Routes>
