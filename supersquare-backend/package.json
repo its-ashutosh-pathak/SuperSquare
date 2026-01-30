@@ -1,0 +1,36 @@
+{
+    "name": "supersquare-server",
+    "version": "1.0.0",
+    "description": "Game server for SuperSquare",
+    "main": "dist/server.js",
+    "scripts": {
+        "start": "node dist/server.js",
+        "dev": "ts-node src/server.ts",
+        "build": "tsc",
+        "prebuild": "robocopy ../supersquare-frontend/src/engine src/engine /E /NP /NFL /NDL /NJH /NJS || exit 0"
+    },
+    "dependencies": {
+        "axios": "^1.13.2",
+        "bcrypt": "^6.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^4.22.1",
+        "jsonwebtoken": "^9.0.3",
+        "mongoose": "^9.1.5",
+        "nodemailer": "^7.0.13",
+        "socket.io": "^4.7.4",
+        "uuid": "^9.0.1"
+    },
+    "devDependencies": {
+        "@types/bcrypt": "^6.0.0",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/mongoose": "^5.11.96",
+        "@types/node": "^20.11.19",
+        "@types/nodemailer": "^7.0.9",
+        "@types/uuid": "^9.0.8",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    }
+}
