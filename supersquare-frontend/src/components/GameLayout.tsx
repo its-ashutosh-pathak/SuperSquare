@@ -101,7 +101,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
     }, [isOnline, currentGameState?.winner, mp, navigate]);
 
     return (
-        <MobileContainer style={{ height: '800px' }}>
+        <MobileContainer>
             <div className="app-container" style={{
                 width: '100%',
                 height: '100%',
@@ -241,7 +241,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                transform: `scale(1.28) translateY(${isOnline ? '-10%' : '-25%'})`,
+                                transform: `scale(1.28) translateY(${isOnline ? '-10%' : '-20%'})`,
                                 marginBottom: isOnline ? '4rem' : '0' // Make space for input if online
                             }}>
                                 <MainBoard gameState={currentGameState} onMove={handleMove} />
@@ -356,7 +356,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                 {!isOnline && (
                     <div style={{
                         position: 'absolute',
-                        bottom: '15%',
+                        bottom: '5%',
                         left: 0,
                         right: 0,
                         display: 'flex',
