@@ -300,7 +300,8 @@ export const googleAuth = (req: Request, res: Response) => {
     const mode = req.query.mode || 'login'; // 'login' or 'signup'
     const state = encodeURIComponent(JSON.stringify({ mode }));
 
-    const redirectUri = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:3000/api/auth/google/callback&response_type=code&scope=profile email&state=${state}`;
+    const apiUrl = process.env.API_URL || 'http://localhost:3000';
+    const redirectUri = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${apiUrl}/api/auth/google/callback&response_type=code&scope=profile email&state=${state}`;
     res.redirect(redirectUri);
 };
 
@@ -326,7 +327,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             client_secret: process.env.GOOGLE_CLIENT_SECRET,
             code,
             grant_type: 'authorization_code',
-            redirect_uri: 'http://localhost:3000/api/auth/google/callback'
+            redirect_uri: `${process.env.API_URL || 'http://localhost:3000'}/api/auth/google/callback`
         });
 
         const { access_token } = data;
@@ -370,13 +371,13 @@ export const googleCallback = async (req: Request, res: Response) => {
         if (!user) {
             // CHECK MODE: If Login mode, REJECT new users
             if (mode === 'login') {
-                return res.redirect('http://localhost:5173/login?error=NoAccountFoundSignupRequired');
+                return res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/login?error=NoAccountFoundSignupRequired`);
             }
 
             // New Google User (Signup Mode) -> Redirect to Frontend to complete profile
             const tempPayload = { googleId, email, picture, isNewGoogleUser: true };
             const tempToken = jwt.sign(tempPayload, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-            return res.redirect(`http://localhost:5173/complete-google?token=${tempToken}&email=${email}`);
+            return res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/complete-google?token=${tempToken}&email=${email}`);
         }
 
         // Existing User - Link & Login
@@ -386,11 +387,11 @@ export const googleCallback = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET as string, { expiresIn: '7d' });
-        res.redirect(`http://localhost:5173/auth-success?token=${token}`);
+        res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/auth-success?token=${token}`);
 
     } catch (e: any) {
         console.error("Google Callback Error", e.response?.data || e.message);
-        res.redirect('http://localhost:5173/login?error=GoogleAuthFailed');
+        res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/login?error=GoogleAuthFailed`);
     }
 };
 
