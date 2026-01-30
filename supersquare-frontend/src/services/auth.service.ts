@@ -47,7 +47,8 @@ export const authService = {
     },
 
     googleLogin(mode: 'login' | 'signup' = 'login') {
-        window.location.href = `http://localhost:3000/api/auth/google?mode=${mode}`;
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        window.location.href = `${apiUrl}/api/auth/google?mode=${mode}`;
     },
 
     async getMe(): Promise<any> {
