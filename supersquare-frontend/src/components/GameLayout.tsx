@@ -39,6 +39,31 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
         }
     }, [mp.lastMessage]);
 
+    // Dynamic Scale for Board to prevent cropping
+    const [boardScale, setBoardScale] = useState(1.28);
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Base width of board container approx 350px (300px min-width + padding/borders)
+            // We want to keep 1.28 scale if space permits, otherwise shrink.
+            // Safe margin: 32px (1rem padding on each side)
+            const availableWidth = window.innerWidth - 32;
+            const requiredWidthForMaxScale = 350 * 1.28;
+
+            if (availableWidth < requiredWidthForMaxScale) {
+                // Determine new scale to fit
+                const newScale = Math.min(1.28, availableWidth / 350);
+                setBoardScale(newScale);
+            } else {
+                setBoardScale(1.28);
+            }
+        };
+
+        handleResize(); // Init
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const handleSendMessage = () => {
         if (!messageInput.trim()) return;
         if (messageInput.length > 101) return;
@@ -241,7 +266,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                transform: `scale(1.28) translateY(${isOnline ? '-10%' : '-20%'})`,
+                                transform: `scale(${boardScale}) translateY(${isOnline ? '-10%' : '-20%'})`,
                                 marginBottom: isOnline ? '4rem' : '0' // Make space for input if online
                             }}>
                                 <MainBoard gameState={currentGameState} onMove={handleMove} />
