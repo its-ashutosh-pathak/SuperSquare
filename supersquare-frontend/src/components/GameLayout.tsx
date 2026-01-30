@@ -381,7 +381,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                 {!isOnline && (
                     <div style={{
                         position: 'absolute',
-                        bottom: '5%',
+                        bottom: '10%',
                         left: 0,
                         right: 0,
                         display: 'flex',
