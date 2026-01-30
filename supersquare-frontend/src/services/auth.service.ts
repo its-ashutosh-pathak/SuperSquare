@@ -48,9 +48,10 @@ export const authService = {
     },
 
     googleLogin(mode: 'login' | 'signup' = 'login') {
-        // Dynamic API URL Logic matching api.ts
         const isNative = Capacitor.isNativePlatform();
-        const baseUrl = isNative ? 'http://10.0.2.2:3000' : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
+        const baseUrl = (isNative && import.meta.env.DEV)
+            ? 'http://10.0.2.2:3000'
+            : (import.meta.env.VITE_API_URL || 'http://localhost:3000');
 
         const platform = isNative ? 'android' : 'web';
 
