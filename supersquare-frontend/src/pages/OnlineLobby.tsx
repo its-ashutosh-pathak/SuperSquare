@@ -1088,9 +1088,7 @@ const OnlineLobby: React.FC = () => {
                                                         wordBreak: 'break-word',
                                                         lineHeight: '1.2',
                                                         cursor: 'pointer',
-                                                        textDecoration: 'underline',
-                                                        textDecorationStyle: 'dotted',
-                                                        textDecorationColor: '#FACC15',
+
                                                         transition: 'color 0.2s'
                                                     }}
                                                     onMouseEnter={(e) => e.currentTarget.style.color = '#FACC15'}
