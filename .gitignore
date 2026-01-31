@@ -10,6 +10,12 @@ build/
 .env.local
 .env.*.local
 
+# Credentials and Secrets (DO NOT COMMIT)
+*credentials.txt
+*secrets.txt
+*.pem
+*.key
+
 # IDE
 .vscode/
 .idea/
