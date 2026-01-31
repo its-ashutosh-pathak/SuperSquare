@@ -84,7 +84,7 @@ const Login: React.FC = () => {
                                 </span>
                             </h1>
                             <p style={{ fontSize: '0.7rem', color: '#71717A', margin: '0.05rem 0 0.5rem 0' }}>
-                                Made with ❤️ by Ashutosh Pathak
+                                Made with ❤️ by <a href="https://www.linkedin.com/in/its-ashutosh-pathak" target="_blank" rel="noopener noreferrer" style={{ color: '#71717A', textDecoration: 'none' }}>Ashutosh Pathak</a>
                             </p>
                             <p style={{ fontSize: '0.875rem', color: '#A1A1AA', margin: 0 }}>Login</p>
                         </div>

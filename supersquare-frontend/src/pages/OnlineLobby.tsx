@@ -629,7 +629,7 @@ const OnlineLobby: React.FC = () => {
                             <span style={styles.logoGradient}>SuperSquare</span>
                         </h1>
                         <p style={{ fontSize: '0.7rem', color: '#A1A1AA', margin: '0 0 1.5rem 0' }}>
-                            Made with ❤️ by Ashutosh Pathak
+                            Made with ❤️ by <a href="https://www.linkedin.com/in/its-ashutosh-pathak" target="_blank" rel="noopener noreferrer" style={{ color: '#A1A1AA', textDecoration: 'none' }}>Ashutosh Pathak</a>
                         </p>
                     </div>
                     {/* Connection Indicator */}

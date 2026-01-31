@@ -217,7 +217,7 @@ export const GameLayout: React.FC<GameLayoutProps> = ({ initialMode }) => {
                             SuperSquare
                         </h1>
                         <p style={{ fontSize: '0.7rem', color: '#A1A1AA', margin: '0.2rem 0 0 0.2rem' }}>
-                            Made with ❤️ by Ashutosh Pathak
+                            Made with ❤️ by <a href="https://www.linkedin.com/in/its-ashutosh-pathak" target="_blank" rel="noopener noreferrer" style={{ color: '#A1A1AA', textDecoration: 'none' }}>Ashutosh Pathak</a>
                         </p>
                     </div>
 
