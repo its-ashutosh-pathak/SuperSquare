@@ -918,6 +918,15 @@ const OnlineLobby: React.FC = () => {
                                                 return (
                                                     <div
                                                         key={user.id}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            padding: '0.75rem',
+                                                            borderBottom: '1px solid #27272A',
+                                                            cursor: 'pointer',
+                                                            transition: 'background-color 0.2s'
+                                                        }}
                                                         onClick={() => {
                                                             setSelectedUserId(user.id);
                                                             getUserStats(user.id);
@@ -925,12 +934,10 @@ const OnlineLobby: React.FC = () => {
                                                         onMouseEnter={(e) => {
                                                             if (!isSent && !isFriend) {
                                                                 e.currentTarget.style.backgroundColor = '#1F1F1F';
-                                                                e.currentTarget.style.borderColor = '#3F3F46';
                                                             }
                                                         }}
                                                         onMouseLeave={(e) => {
-                                                            e.currentTarget.style.backgroundColor = '#18181B';
-                                                            e.currentTarget.style.borderColor = '#27272A';
+                                                            e.currentTarget.style.backgroundColor = 'transparent';
                                                         }}
                                                     >
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: 0 }}>
