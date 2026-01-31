@@ -33,6 +33,17 @@ export interface GameInvite {
     fromUserProfilePicture?: string;
 }
 
+export interface UserStats {
+    userId: string;
+    name: string;
+    profilePicture?: string;
+    elo: number;
+    wins: number;
+    losses: number;
+    gamesPlayed: number;
+    rank: number;
+}
+
 interface MultiplayerContextType {
     isConnected: boolean;
     isSearching: boolean;
@@ -41,6 +52,7 @@ interface MultiplayerContextType {
     incomingRequests: FriendRequest[];
     incomingGameInvites: GameInvite[];
     searchResults: Friend[]; // Reuse Friend type since it has the stats structure
+    userStats: UserStats | null;
     roomId: string | null;
     opponentId: string | null;
     opponentName: string | null;
@@ -57,6 +69,8 @@ interface MultiplayerContextType {
     findMatch: () => void;
     searchUsers: (query: string) => void;
     clearSearchResults: () => void;
+    getUserStats: (userId: string) => void;
+    clearUserStats: () => void;
     createRoom: () => void;
     joinRoom: (roomId: string) => void;
     leaveRoom: () => void;
@@ -80,6 +94,7 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [incomingRequests, setIncomingRequests] = useState<FriendRequest[]>([]);
     const [incomingGameInvites, setIncomingGameInvites] = useState<GameInvite[]>([]);
     const [searchResults, setSearchResults] = useState<Friend[]>([]); // New state
+    const [userStats, setUserStats] = useState<UserStats | null>(null);
 
     const [roomId, setRoomId] = useState<string | null>(null);
     const [opponentId, setOpponentId] = useState<string | null>(null);
@@ -212,6 +227,10 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             setSearchResults(results || []);
         };
 
+        const onUserStats = (stats: UserStats) => {
+            setUserStats(stats);
+        };
+
         const onMessageReceived = (payload: { senderId: string, message: string, timestamp: number }) => {
             console.log("SOCKET: MESSAGE_RECEIVED", payload);
             setLastMessage(payload);
@@ -242,6 +261,7 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
         socket.on('OPPONENT_DISCONNECTED', onOpponentDisconnected);
         socket.on('MESSAGE_RECEIVED', onMessageReceived);
         socket.on('SEARCH_RESULTS', onSearchResults); // Listen
+        socket.on('USER_STATS', onUserStats);
         socket.on('ERROR', onError);
 
         // Cleanup
@@ -262,6 +282,7 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             socket.off('OPPONENT_DISCONNECTED', onOpponentDisconnected);
             socket.off('MESSAGE_RECEIVED', onMessageReceived);
             socket.off('SEARCH_RESULTS', onSearchResults); // Cleanup
+            socket.off('USER_STATS', onUserStats);
             socket.off('ERROR', onError);
 
             socketService.disconnect();
@@ -293,6 +314,14 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
 
     const clearSearchResults = useCallback(() => {
         setSearchResults([]);
+    }, []);
+
+    const getUserStats = useCallback((userId: string) => {
+        socketService.socket?.emit('GET_USER_STATS', { userId });
+    }, []);
+
+    const clearUserStats = useCallback(() => {
+        setUserStats(null);
     }, []);
 
     const createRoom = useCallback(() => {
@@ -354,10 +383,10 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
 
     return (
         <MultiplayerContext.Provider value={{
-            isConnected, isSearching, userProfile, friends, incomingRequests, searchResults, incomingGameInvites,
+            isConnected, isSearching, userProfile, friends, incomingRequests, searchResults, userStats, incomingGameInvites,
             roomId, opponentId, opponentName, opponentUsername, opponentProfilePicture, mySymbol, mpGameState, timeLeft, errorMsg,
             lastMessage,
-            findMatch, searchUsers, clearSearchResults, createRoom, joinRoom, leaveRoom, makeMpMove,
+            findMatch, searchUsers, clearSearchResults, getUserStats, clearUserStats, createRoom, joinRoom, leaveRoom, makeMpMove,
             sendFriendRequest, respondFriendRequest, sendGameInvite, respondGameInvite, sendMessage, clearError
         }}>
             {children}

@@ -14,6 +14,7 @@ export interface ClientToServerEvents {
     SEND_GAME_INVITE: (payload: { targetUserId: string }) => void;
     RESPOND_GAME_INVITE: (payload: { targetUserId: string, accept: boolean }) => void;
     SEND_MESSAGE: (payload: { roomId: string, message: string }) => void;
+    GET_USER_STATS: (payload: { userId: string }) => void;
 }
 
 // Events we listen to
@@ -34,6 +35,7 @@ export interface ServerToClientEvents {
     GAME_INVITE_REJECTED: (payload: { targetUserName: string }) => void;
     ERROR: (payload: { message: string }) => void;
     MESSAGE_RECEIVED: (payload: { senderId: string, message: string, timestamp: number }) => void;
+    USER_STATS: (payload: { userId: string, name: string, profilePicture?: string, elo: number, wins: number, losses: number, gamesPlayed: number, rank: number }) => void;
 }
 
 export interface UserProfile {

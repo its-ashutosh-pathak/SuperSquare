@@ -179,27 +179,17 @@ io.on('connection', (socket: Socket) => {
             const user = state.createUser(safeUserId, name, socket.id, persistentFriends, persistentRequests);
             console.log(`User Logged In: ${user.id} (${user.name})`);
 
-            // Construct Rich Friend List with Status
+            // Construct Rich Friend List with Status (basic info only)
             const richFriends = await Promise.all(persistentFriends.map(async (fid: string) => {
                 const activeFriend = state.getUser(fid);
-                const fDb = await User.findOne({ username: fid }).select('name profilePicture lastActiveAt elo wins losses gamesPlayed');
-
-                // Calculate rank
-                let rank = 0;
-                if (fDb) {
-                    const betterElo = await User.countDocuments({ elo: { $gt: fDb.elo } });
-                    const sameEloBetterWins = await User.countDocuments({ elo: fDb.elo, wins: { $gt: fDb.wins } });
-                    rank = betterElo + sameEloBetterWins + 1;
-                }
+                const fDb = await User.findOne({ username: fid }).select('name profilePicture lastActiveAt');
 
                 if (activeFriend && activeFriend.status !== 'OFFLINE') {
                     return {
                         id: fid,
                         name: activeFriend.name,
                         status: activeFriend.status,
-                        profilePicture: fDb?.profilePicture,
-                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed,
-                        rank
+                        profilePicture: fDb?.profilePicture
                     };
                 } else {
                     return {
@@ -207,9 +197,7 @@ io.on('connection', (socket: Socket) => {
                         name: fDb?.name || fid,
                         status: 'OFFLINE',
                         lastActiveAt: fDb?.lastActiveAt,
-                        profilePicture: fDb?.profilePicture,
-                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed,
-                        rank
+                        profilePicture: fDb?.profilePicture
                     };
                 }
             }));
@@ -249,42 +237,52 @@ io.on('connection', (socket: Socket) => {
                     { username: { $regex: query, $options: 'i' } },
                     { name: { $regex: query, $options: 'i' } }
                 ]
-            }).limit(10).select('name username profilePicture elo wins losses gamesPlayed');
+            }).limit(10).select('name username profilePicture');
 
-            const results = await Promise.all(users.map(async (u) => {
-                let rank = 0;
-                const betterElo = await User.countDocuments({ elo: { $gt: u.elo } });
-                const sameEloBetterWins = await User.countDocuments({ elo: u.elo, wins: { $gt: u.wins } });
-                rank = betterElo + sameEloBetterWins + 1;
-
-                // Check friendship status
-                const requestingUser = state.getUserBySocket(socket.id);
-                let isFriend = false;
-                let isRequested = false;
-
-                if (requestingUser) {
-                    isFriend = requestingUser.friends.includes(u.username);
-                    // We need to check DB for outgoing requests or keep it simple.
-                    // Ideally, we'd check if `u.id` is in `requestingUser.outgoingRequests` if we tracked it,
-                    // OR check if `requestingUser.id` is in `u.incomingRequests`.
-                    // For now, let's just return basic info. Friendship status can be computed on frontend if friends list is available.
-                }
-
-                return {
-                    id: u.username,
-                    name: u.name,
-                    profilePicture: u.profilePicture,
-                    elo: u.elo,
-                    wins: u.wins,
-                    losses: u.losses,
-                    gamesPlayed: u.gamesPlayed,
-                    rank
-                };
+            const results = users.map((u) => ({
+                id: u.username,
+                name: u.name,
+                profilePicture: u.profilePicture
             }));
 
             socket.emit('SEARCH_RESULTS', { results });
         } catch (error) {
             console.error("Search Error:", error);
+        }
+    });
+
+    // Get User Stats (on-demand)
+    socket.on('GET_USER_STATS', async ({ userId }) => {
+        try {
+            const user = await User.findOne({ username: userId })
+                .select('name username profilePicture elo wins losses gamesPlayed');
+
+            if (!user) {
+                socket.emit('ERROR', { message: 'User not found' });
+                return;
+            }
+
+            // Calculate rank
+            const betterElo = await User.countDocuments({ elo: { $gt: user.elo } });
+            const sameEloBetterWins = await User.countDocuments({
+                elo: user.elo,
+                wins: { $gt: user.wins }
+            });
+            const rank = betterElo + sameEloBetterWins + 1;
+
+            socket.emit('USER_STATS', {
+                userId: user.username,
+                name: user.name,
+                profilePicture: user.profilePicture,
+                elo: user.elo,
+                wins: user.wins,
+                losses: user.losses,
+                gamesPlayed: user.gamesPlayed,
+                rank
+            });
+        } catch (error) {
+            console.error('Error fetching user stats:', error);
+            socket.emit('ERROR', { message: 'Failed to fetch user stats' });
         }
     });
 

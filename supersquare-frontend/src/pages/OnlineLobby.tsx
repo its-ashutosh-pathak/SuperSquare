@@ -35,7 +35,7 @@ const OnlineLobby: React.FC = () => {
     const {
         isConnected, isSearching, findMatch, createRoom, joinRoom,
         friends, incomingRequests, sendFriendRequest, respondFriendRequest,
-        searchResults, searchUsers, clearSearchResults, leaveRoom, mpGameState, roomId,
+        searchResults, searchUsers, clearSearchResults, getUserStats, clearUserStats, userStats, leaveRoom, mpGameState, roomId,
         incomingGameInvites, sendGameInvite, respondGameInvite, errorMsg, clearError
     } = useMultiplayerContext();
     const navigate = useNavigate();
@@ -53,6 +53,9 @@ const OnlineLobby: React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editName, setEditName] = useState("");
     const [isSavingName, setIsSavingName] = useState(false);
+
+    // User Stats Modal State
+    const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
     // Auto-clear error message
     useEffect(() => {
@@ -760,15 +763,6 @@ const OnlineLobby: React.FC = () => {
                                                         <div style={{ flex: 1 }}>
                                                             <div style={{ fontSize: '0.9rem', color: '#E5E7EB', fontWeight: 500 }}>{req.name}</div>
                                                             <div style={{ fontSize: '0.75rem', color: '#71717A' }}>@{req.id}</div>
-                                                            {req.elo !== undefined && (
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#A1A1AA', marginTop: '0.2rem' }}>
-                                                                    {req.rank && <div title="Rank"><span style={{ color: '#F59E0B', fontWeight: 600 }}>#{req.rank}</span> Rank</div>}
-                                                                    <div title="Games Played"><span style={{ color: '#FACC15', fontWeight: 600 }}>{req.gamesPlayed || 0}</span> G</div>
-                                                                    <div title="Wins"><span style={{ color: '#F59E0B', fontWeight: 600 }}>{req.wins || 0}</span> W</div>
-                                                                    <div title="Losses"><span style={{ color: '#EF4444', fontWeight: 600 }}>{req.losses || 0}</span> L</div>
-                                                                    <div title="Rating"><span style={{ color: '#FACC15', fontWeight: 600 }}>{req.elo}</span> Rating</div>
-                                                                </div>
-                                                            )}
                                                         </div>
                                                     </div>
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -799,7 +793,13 @@ const OnlineLobby: React.FC = () => {
                                         ) : (
                                             friends.filter(f => f.status !== 'OFFLINE').map((friend) => (
                                                 <div key={friend.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                    <div
+                                                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, cursor: 'pointer' }}
+                                                        onClick={() => {
+                                                            setSelectedUserId(friend.id);
+                                                            getUserStats(friend.id);
+                                                        }}
+                                                    >
                                                         <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', background: '#27272A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A1A1AA', fontSize: '0.8rem', overflow: 'hidden' }}>
                                                             {friend.profilePicture ? (
                                                                 <img src={friend.profilePicture} alt={friend.name} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -810,13 +810,6 @@ const OnlineLobby: React.FC = () => {
                                                         <div>
                                                             <div style={{ fontSize: '0.9rem', color: '#E5E7EB' }}>{friend.name}</div>
                                                             <div style={{ fontSize: '0.75rem', color: '#A1A1AA' }}>@{friend.id}</div>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#A1A1AA', marginTop: '0.2rem' }}>
-                                                                <div title="Rank"><span style={{ color: '#F59E0B', fontWeight: 600 }}>#{friend.rank || '-'}</span> Rank</div>
-                                                                <div title="Games Played"><span style={{ color: '#FACC15', fontWeight: 600 }}>{friend.gamesPlayed || 0}</span> G</div>
-                                                                <div title="Wins"><span style={{ color: '#F59E0B', fontWeight: 600 }}>{friend.wins || 0}</span> W</div>
-                                                                <div title="Losses"><span style={{ color: '#EF4444', fontWeight: 600 }}>{friend.losses || 0}</span> L</div>
-                                                                <div title="Rating"><span style={{ color: '#FACC15', fontWeight: 600 }}>{friend.elo}</span> Rating</div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <Button onClick={() => sendGameInvite(friend.id)} style={{ width: 'auto', height: '1.75rem', padding: '0 0.75rem', backgroundColor: '#D97706', color: 'black', fontSize: '0.75rem', borderRadius: '0.5rem', fontWeight: 600 }}>Play</Button>
@@ -833,7 +826,14 @@ const OnlineLobby: React.FC = () => {
                                             <div style={{ color: '#52525B', fontSize: '0.8rem' }}>No offline friends.</div>
                                         ) : (
                                             friends.filter(f => f.status === 'OFFLINE').map((friend) => (
-                                                <div key={friend.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: 0.6 }}>
+                                                <div
+                                                    key={friend.id}
+                                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: 0.6, cursor: 'pointer' }}
+                                                    onClick={() => {
+                                                        setSelectedUserId(friend.id);
+                                                        getUserStats(friend.id);
+                                                    }}
+                                                >
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                                         <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', background: '#27272A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#52525B', fontSize: '0.8rem', overflow: 'hidden' }}>
                                                             {friend.profilePicture ? (
@@ -845,13 +845,6 @@ const OnlineLobby: React.FC = () => {
                                                         <div>
                                                             <div style={{ fontSize: '0.9rem', color: '#A1A1AA' }}>{friend.name}</div>
                                                             <div style={{ fontSize: '0.75rem', color: '#52525B' }}>@{friend.id} <span style={{ margin: '0 4px' }}>•</span> {friend.lastActiveAt ? `Last seen ${timeAgo(new Date(friend.lastActiveAt))}` : 'Offline'}</div>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#52525B', marginTop: '0.2rem' }}>
-                                                                <div title="Rank"><span style={{ color: '#71717A', fontWeight: 600 }}>#{friend.rank || '-'}</span> Rank</div>
-                                                                <div title="Games Played"><span style={{ color: '#71717A', fontWeight: 600 }}>{friend.gamesPlayed || 0}</span> G</div>
-                                                                <div title="Wins"><span style={{ color: '#71717A', fontWeight: 600 }}>{friend.wins || 0}</span> W</div>
-                                                                <div title="Losses"><span style={{ color: '#71717A', fontWeight: 600 }}>{friend.losses || 0}</span> L</div>
-                                                                <div title="Rating"><span style={{ color: '#71717A', fontWeight: 600 }}>{friend.elo}</span> Rating</div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -913,17 +906,14 @@ const OnlineLobby: React.FC = () => {
                                                 return (
                                                     <div
                                                         key={user.id}
-                                                        onClick={() => !isFriend && handleSendFriendRequest(user.id)}
-                                                        style={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-between',
-                                                            padding: '0.75rem',
-                                                            borderRadius: '0.5rem',
-                                                            backgroundColor: '#18181B',
-                                                            border: '1px solid #27272A',
-                                                            cursor: (isSent || isFriend) ? 'default' : 'pointer',
-                                                            transition: 'all 0.2s'
+                                                        onClick={(e) => {
+                                                            if (!isSent && !isFriend) {
+                                                                e.stopPropagation();
+                                                                sendFriendRequest(user.id);
+                                                            } else {
+                                                                setSelectedUserId(user.id);
+                                                                getUserStats(user.id);
+                                                            }
                                                         }}
                                                         onMouseEnter={(e) => {
                                                             if (!isSent && !isFriend) {
@@ -962,13 +952,6 @@ const OnlineLobby: React.FC = () => {
                                                                 </div>
                                                                 <div style={{ fontSize: '0.75rem', color: '#71717A' }}>
                                                                     @{user.id}
-                                                                </div>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#52525B', marginTop: '0.2rem' }}>
-                                                                    <div title="Rank"><span style={{ color: '#F59E0B', fontWeight: 600 }}>#{user.rank || '-'}</span> Rank</div>
-                                                                    <div title="Games Played"><span style={{ color: '#FACC15', fontWeight: 600 }}>{user.gamesPlayed || 0}</span> G</div>
-                                                                    <div title="Wins"><span style={{ color: '#F59E0B', fontWeight: 600 }}>{user.wins || 0}</span> W</div>
-                                                                    <div title="Losses"><span style={{ color: '#EF4444', fontWeight: 600 }}>{user.losses || 0}</span> L</div>
-                                                                    <div title="Rating"><span style={{ color: '#FACC15', fontWeight: 600 }}>{user.elo}</span> Rating</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1239,6 +1222,100 @@ const OnlineLobby: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            {/* User Stats Modal */}
+            {selectedUserId && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        inset: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: Z_INDEX.MODAL + 10,
+                        backdropFilter: 'blur(4px)'
+                    }}
+                    onClick={() => {
+                        setSelectedUserId(null);
+                        clearUserStats();
+                    }}
+                >
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        style={{
+                            backgroundColor: '#18181B',
+                            borderRadius: '1rem',
+                            padding: '1.5rem',
+                            maxWidth: '400px',
+                            width: '90%',
+                            border: '1px solid #27272A',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3)'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {userStats ? (
+                            <>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
+                                    <div style={{ width: '5rem', height: '5rem', borderRadius: '50%', background: '#27272A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FACC15', fontSize: '2rem', fontWeight: 600, overflow: 'hidden', marginBottom: '0.75rem' }}>
+                                        {userStats.profilePicture ? (
+                                            <img src={userStats.profilePicture} alt={userStats.name} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        ) : (
+                                            userStats.name.charAt(0).toUpperCase()
+                                        )}
+                                    </div>
+                                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#E5E7EB' }}>{userStats.name}</div>
+                                    <div style={{ fontSize: '0.875rem', color: '#71717A' }}>@{userStats.userId}</div>
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Rank</div>
+                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#F59E0B' }}>#{userStats.rank}</div>
+                                    </div>
+                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Games</div>
+                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FACC15' }}>{userStats.gamesPlayed}</div>
+                                    </div>
+                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Wins</div>
+                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#10B981' }}>{userStats.wins}</div>
+                                    </div>
+                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Losses</div>
+                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#EF4444' }}>{userStats.losses}</div>
+                                    </div>
+                                </div>
+                                <div style={{ backgroundColor: '#27272A', padding: '1rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Rating</div>
+                                    <div style={{ fontSize: '2rem', fontWeight: 700, color: '#FACC15' }}>{userStats.elo}</div>
+                                </div>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedUserId(null);
+                                        clearUserStats();
+                                    }}
+                                    style={{
+                                        width: '100%',
+                                        marginTop: '1rem',
+                                        backgroundColor: '#27272A',
+                                        color: '#E5E7EB',
+                                        borderRadius: '0.5rem',
+                                        padding: '0.75rem'
+                                    }}
+                                >
+                                    Close
+                                </Button>
+                            </>
+                        ) : (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: '#71717A' }}>
+                                Loading statistics...
+                            </div>
+                        )}
+                    </motion.div>
+                </div>
+            )}
+
 
             {/* Error Toast */}
             {errorMsg && (
