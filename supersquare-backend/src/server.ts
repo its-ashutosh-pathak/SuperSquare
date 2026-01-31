@@ -163,78 +163,70 @@ io.on('connection', (socket: Socket) => {
 
     // AUTH
     socket.on('LOGIN', async ({ userId }) => {
-        const safeUserId = userId || `Guest_${socket.id.substr(0, 4)}`;
+        try {
+            const safeUserId = userId || `Guest_${socket.id.substr(0, 4)}`;
 
-        // Fetch persistent data
-        let dbUser = await User.findOne({ username: safeUserId });
-        if (!dbUser && !safeUserId.startsWith('Guest_')) {
-            // Should verify token ideally, but reusing ID for now
+            // Fetch persistent data
+            let dbUser = await User.findOne({ username: safeUserId });
+            if (!dbUser && !safeUserId.startsWith('Guest_')) {
+                // Should verify token ideally, but reusing ID for now
+            }
+
+            const name = dbUser?.name || safeUserId;
+            const persistentFriends = dbUser?.friends || [];
+            const persistentRequests = dbUser?.incomingRequests || [];
+
+            const user = state.createUser(safeUserId, name, socket.id, persistentFriends, persistentRequests);
+            console.log(`User Logged In: ${user.id} (${user.name})`);
+
+            // Construct Rich Friend List with Status (NO RANK CALCULATION - performance fix)
+            const richFriends = await Promise.all(persistentFriends.map(async (fid: string) => {
+                const activeFriend = state.getUser(fid);
+                const fDb = await User.findOne({ username: fid }).select('name profilePicture lastActiveAt elo wins losses gamesPlayed');
+
+                if (activeFriend && activeFriend.status !== 'OFFLINE') {
+                    return {
+                        id: fid,
+                        name: activeFriend.name,
+                        status: activeFriend.status,
+                        profilePicture: fDb?.profilePicture,
+                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed
+                    };
+                } else {
+                    return {
+                        id: fid,
+                        name: fDb?.name || fid,
+                        status: 'OFFLINE',
+                        lastActiveAt: fDb?.lastActiveAt,
+                        profilePicture: fDb?.profilePicture,
+                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed
+                    };
+                }
+            }));
+
+            // Construct Rich Requests
+            const richRequests = await Promise.all(persistentRequests.map(async (rid: string) => {
+                const rDb = await User.findOne({ username: rid }).select('name profilePicture');
+                return { id: rid, name: rDb?.name || rid, profilePicture: rDb?.profilePicture };
+            }));
+
+            socket.emit('LOGIN_SUCCESS', {
+                user: { id: user.id, name: user.name, status: user.status },
+                friends: richFriends, // Send rich objects
+                requests: richRequests // Send rich objects
+            });
+
+            // Notify friends
+            user.friends.forEach(fid => {
+                const friend = state.getUser(fid);
+                if (friend && friend.socketId && friend.status !== 'OFFLINE') {
+                    io.to(friend.socketId).emit('FRIEND_STATUS', { userId: user.id, status: 'ONLINE' });
+                }
+            });
+        } catch (error) {
+            console.error('[LOGIN ERROR]', error);
+            socket.emit('ERROR', { message: 'Login failed. Please try again.' });
         }
-
-        const name = dbUser?.name || safeUserId;
-        const persistentFriends = dbUser?.friends || [];
-        const persistentRequests = dbUser?.incomingRequests || [];
-
-        const user = state.createUser(safeUserId, name, socket.id, persistentFriends, persistentRequests);
-        console.log(`User Logged In: ${user.id} (${user.name})`);
-
-        // Construct Rich Friend List with Status
-        const richFriends = await Promise.all(persistentFriends.map(async (fid: string) => {
-            const activeFriend = state.getUser(fid);
-            const fDb = await User.findOne({ username: fid }).select('name profilePicture lastActiveAt elo wins losses gamesPlayed');
-
-            // Calculate Rank: Count users with higher ELO (or same ELO but more wins)
-            // For simplicity/speed, let's just do ELO for now, or match leaderboard logic strictly if needed.
-            // Leaderboard sort: { elo: -1, wins: -1 }
-            // Rank = count({ elo: > f.elo }) + count({ elo: f.elo, wins: > f.wins }) + 1
-            let rank = 0;
-            if (fDb) {
-                const betterElo = await User.countDocuments({ elo: { $gt: fDb.elo } });
-                const sameEloBetterWins = await User.countDocuments({ elo: fDb.elo, wins: { $gt: fDb.wins } });
-                rank = betterElo + sameEloBetterWins + 1;
-            }
-
-            if (activeFriend && activeFriend.status !== 'OFFLINE') {
-                return {
-                    id: fid,
-                    name: activeFriend.name,
-                    status: activeFriend.status,
-                    profilePicture: fDb?.profilePicture,
-                    elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed,
-                    rank
-                };
-            } else {
-                return {
-                    id: fid,
-                    name: fDb?.name || fid,
-                    status: 'OFFLINE',
-                    lastActiveAt: fDb?.lastActiveAt,
-                    profilePicture: fDb?.profilePicture,
-                    elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed,
-                    rank
-                };
-            }
-        }));
-
-        // Construct Rich Requests
-        const richRequests = await Promise.all(persistentRequests.map(async (rid: string) => {
-            const rDb = await User.findOne({ username: rid }).select('name profilePicture');
-            return { id: rid, name: rDb?.name || rid, profilePicture: rDb?.profilePicture };
-        }));
-
-        socket.emit('LOGIN_SUCCESS', {
-            user: { id: user.id, name: user.name, status: user.status },
-            friends: richFriends, // Send rich objects
-            requests: richRequests // Send rich objects
-        });
-
-        // Notify friends
-        user.friends.forEach(fid => {
-            const friend = state.getUser(fid);
-            if (friend && friend.socketId && friend.status !== 'OFFLINE') {
-                io.to(friend.socketId).emit('FRIEND_STATUS', { userId: user.id, status: 'ONLINE' });
-            }
-        });
     });
 
     // SOCIAL
@@ -298,6 +290,7 @@ io.on('connection', (socket: Socket) => {
         }
         if (sender.id === targetUserId) {
             console.log(`[DEBUG] Cannot send request to self`);
+            socket.emit('ERROR', { message: 'Cannot send friend request to yourself' });
             return;
         }
 
@@ -395,12 +388,19 @@ io.on('connection', (socket: Socket) => {
         const targetActive = state.getUser(targetUserId);
         console.log(`[DEBUG] Target Active State:`, targetActive ? 'Found' : 'Not Found', targetActive?.status);
 
-        // Check persistence
-        if (!targetDb.incomingRequests.includes(sender.id) && !targetDb.friends.includes(sender.id)) {
+        // Check persistence - Use atomic operation to prevent race condition
+        if (!targetDb.friends.includes(sender.id)) {
             console.log(`[DEBUG] Adding request to DB`);
-            targetDb.incomingRequests.push(sender.id);
             try {
-                await targetDb.save();
+                // Atomic operation: only add if not already present
+                const result = await User.updateOne(
+                    { username: targetUserId, incomingRequests: { $ne: sender.id }, friends: { $ne: sender.id } },
+                    { $addToSet: { incomingRequests: sender.id } }
+                );
+                if (result.modifiedCount === 0) {
+                    console.log(`[DEBUG] Request already exists or already friends`);
+                    return;
+                }
                 console.log(`[DEBUG] DB Save Success`);
             } catch (err) {
                 console.error("Error saving targetDb:", err);
@@ -630,7 +630,8 @@ io.on('connection', (socket: Socket) => {
 
             const opponent = state.getUser(opponentId);
             if (!opponent) {
-                // Stale?
+                // Stale entry, re-add current user to queue
+                state.matchmakingQueue.delete(opponentId); // Clean up stale entry
                 state.matchmakingQueue.add(user.id);
                 return;
             }
@@ -696,8 +697,17 @@ io.on('connection', (socket: Socket) => {
         const user = state.getUserBySocket(socket.id);
         if (!user) return;
 
-        // Generate short 6-char code
-        const roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+        // Generate short 6-char code with collision check
+        let roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+        let attempts = 0;
+        while (state.rooms.has(roomId) && attempts < 5) {
+            roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+            attempts++;
+        }
+        if (attempts >= 5) {
+            socket.emit('ERROR', { message: 'Failed to create room. Please try again.' });
+            return;
+        }
 
         state.createRoom(roomId, user.id, null, getInitialState());
         socket.emit('ROOM_CREATED', { roomId });
@@ -709,6 +719,13 @@ io.on('connection', (socket: Socket) => {
 
         // Clean input
         const safeRoomId = (roomId || '').trim().toUpperCase();
+        const room = state.rooms.get(safeRoomId);
+
+        // Check if user is trying to join their own room
+        if (room && room.players.X === user.id) {
+            socket.emit('ERROR', { message: 'Cannot join your own room' });
+            return;
+        }
 
         if (state.joinRoom(safeRoomId, user.id)) {
             const room = state.rooms.get(safeRoomId);

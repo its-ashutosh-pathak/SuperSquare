@@ -267,7 +267,7 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             socketService.disconnect();
             setIsConnected(false);
         };
-    }, [user?._id]);
+    }, [user?.username]); // Changed from user?._id to username for stability
 
     // Local countdown timer for smooth display between backend syncs
     useEffect(() => {

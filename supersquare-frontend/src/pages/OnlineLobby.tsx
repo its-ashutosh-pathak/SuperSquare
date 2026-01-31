@@ -49,6 +49,11 @@ const OnlineLobby: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isCropModalOpen, setIsCropModalOpen] = useState(false);
 
+    // Edit Profile Modal State
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editName, setEditName] = useState("");
+    const [isSavingName, setIsSavingName] = useState(false);
+
     // Auto-clear error message
     useEffect(() => {
         if (errorMsg) {
@@ -119,6 +124,27 @@ const OnlineLobby: React.FC = () => {
     const handleCropCancel = () => {
         setIsCropModalOpen(false);
         setSelectedImage(null);
+    };
+
+    const handleEditProfile = () => {
+        setEditName(user?.name || "");
+        setIsEditModalOpen(true);
+    };
+
+    const handleSaveName = async () => {
+        if (!editName.trim()) return;
+        try {
+            setIsSavingName(true);
+            const response = await api.put('/api/auth/display-name', { name: editName.trim() });
+            if (response.status === 200 && user) {
+                login({ ...user, name: editName.trim() });
+                setIsEditModalOpen(false);
+            }
+        } catch (e) {
+            console.error("Error updating name", e);
+        } finally {
+            setIsSavingName(false);
+        }
     };
 
     /* OLD HANDLE FILE SELECT REMOVED/REPLACED ABOVE */
@@ -462,6 +488,91 @@ const OnlineLobby: React.FC = () => {
                                 </Button>
                             </div>
                         </div>
+                    </div>
+                )}
+
+                {/* EDIT PROFILE MODAL */}
+                {isEditModalOpen && (
+                    <div style={styles.modalOverlay}>
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            style={styles.modalContent}
+                        >
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>Edit Profile</h3>
+                            <p style={{ fontSize: '0.9rem', color: '#A1A1AA', marginBottom: '1.5rem' }}>Update your display name or profile picture.</p>
+
+                            {/* Display Name Input */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', fontSize: '0.85rem', color: '#A1A1AA', marginBottom: '0.5rem', fontWeight: 600 }}>Display Name</label>
+                                <input
+                                    autoFocus
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    placeholder="Enter your name"
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        backgroundColor: '#000',
+                                        border: '1px solid #333',
+                                        borderRadius: '0.5rem',
+                                        color: '#FFF',
+                                        fontSize: '1rem'
+                                    }}
+                                />
+                            </div>
+
+                            {/* Profile Picture Button */}
+                            <Button
+                                onClick={() => {
+                                    fileInputRef.current?.click();
+                                    setIsEditModalOpen(false);
+                                }}
+                                disabled={isUploading}
+                                style={{
+                                    width: '100%',
+                                    marginBottom: '1rem',
+                                    backgroundColor: '#27272A',
+                                    color: '#FFF',
+                                    border: '1px solid #3F3F46',
+                                    opacity: isUploading ? 0.5 : 1
+                                }}
+                            >
+                                {isUploading ? 'Uploading...' : 'Change Profile Picture'}
+                            </Button>
+
+                            {/* Hidden File Input */}
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                style={{ display: 'none' }}
+                                accept="image/*"
+                                onChange={handleFileSelect}
+                            />
+
+                            {/* Action Buttons */}
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <Button
+                                    onClick={() => setIsEditModalOpen(false)}
+                                    style={{ flex: 1, backgroundColor: 'transparent', border: '1px solid #333', color: '#FFF' }}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={handleSaveName}
+                                    disabled={isSavingName || !editName.trim()}
+                                    style={{
+                                        flex: 1,
+                                        backgroundColor: '#FACC15',
+                                        color: '#000',
+                                        fontWeight: 'bold',
+                                        opacity: (!editName.trim() || isSavingName) ? 0.5 : 1
+                                    }}
+                                >
+                                    {isSavingName ? 'Saving...' : 'Save'}
+                                </Button>
+                            </div>
+                        </motion.div>
                     </div>
                 )}
 
@@ -934,14 +1045,11 @@ const OnlineLobby: React.FC = () => {
                                             <div style={{ fontSize: '1.1rem', color: '#F59E0B', fontWeight: 700 }}>{user?.elo}</div>
                                         </div>
 
-                                        {/* Profile Picture */}
+                                        {/* Profile Picture - NO DIRECT CLICK */}
                                         <div
-                                            onClick={() => fileInputRef.current?.click()}
                                             style={{
-                                                width: 'min(9rem, 35vw)', // Responsive width
-                                                height: 'min(9rem, 35vw)', // Responsive height (keep aspect ratio if container was div, but here explicit)
-                                                // Actually min(9rem, 35vw) might make height != width if vw changes? 
-                                                // No, both eval same at any instant.
+                                                width: 'min(9rem, 35vw)',
+                                                height: 'min(9rem, 35vw)',
                                                 borderRadius: '50%',
                                                 backgroundColor: '#18181B',
                                                 display: 'flex',
@@ -949,7 +1057,6 @@ const OnlineLobby: React.FC = () => {
                                                 justifyContent: 'center',
                                                 border: '3px solid #FACC15',
                                                 boxShadow: '0 0 20px rgba(250, 204, 21, 0.15)',
-                                                cursor: 'pointer',
                                                 position: 'relative',
                                                 overflow: 'hidden',
                                                 flexShrink: 0
@@ -975,26 +1082,35 @@ const OnlineLobby: React.FC = () => {
                                                     {user?.name?.charAt(0).toUpperCase() || user?.username?.charAt(0).toUpperCase()}
                                                 </span>
                                             )}
+                                        </div>
 
-                                            {/* Upload Overlay */}
-                                            <div style={{
+                                        {/* Edit Pencil Icon */}
+                                        <div
+                                            onClick={handleEditProfile}
+                                            style={{
                                                 position: 'absolute',
-                                                inset: 0,
-                                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                                top: '10.5rem',
+                                                right: '50%',
+                                                transform: 'translateX(50%)',
+                                                width: '2.5rem',
+                                                height: '2.5rem',
+                                                borderRadius: '50%',
+                                                backgroundColor: '#FACC15',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                opacity: 0,
-                                                transition: 'opacity 0.2s',
-                                                color: 'white',
-                                                fontSize: '0.8rem',
-                                                fontWeight: 600
+                                                cursor: 'pointer',
+                                                border: '2px solid #000',
+                                                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                                                transition: 'transform 0.2s'
                                             }}
-                                                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                                                onMouseLeave={(e) => e.currentTarget.style.opacity = '0'}
-                                            >
-                                                {isUploading ? 'Uploading...' : 'Change'}
-                                            </div>
+                                            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateX(50%) scale(1.1)'}
+                                            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateX(50%) scale(1)'}
+                                        >
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M12 20h9"></path>
+                                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                            </svg>
                                         </div>
 
                                         {/* User Info - Centered */}

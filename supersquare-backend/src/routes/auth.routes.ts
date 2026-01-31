@@ -11,6 +11,7 @@ import {
     identifyUser,
     resetPassword,
     updateProfilePicture,
+    updateDisplayName,
     getLeaderboard
 } from '../controllers/auth.controller';
 import { authenticateToken } from '../middleware/auth.middleware';
@@ -32,6 +33,7 @@ router.get('/me', authenticateToken, getMe);
 router.get('/search', authenticateToken, searchUsers);
 router.get('/search', authenticateToken, searchUsers);
 router.put('/profile-picture', authenticateToken, updateProfilePicture);
+router.put('/display-name', authenticateToken, updateDisplayName);
 router.get('/leaderboard', getLeaderboard); // Public or protected? Let's make it public for now or protected. Requirement didn't specify. Online Lobby is protected.
 // Use protected for consistency
 // router.get('/leaderboard', authenticateToken, getLeaderboard);

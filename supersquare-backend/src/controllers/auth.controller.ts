@@ -519,6 +519,30 @@ export const updateProfilePicture = async (req: AuthRequest, res: Response) => {
     }
 };
 
+// UPDATE DISPLAY NAME
+export const updateDisplayName = async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.user || !req.user.userId) return res.status(401).json({ message: 'Not authenticated.' });
+
+        const { name } = req.body;
+        if (!name || !name.trim()) {
+            return res.status(400).json({ message: 'Display name is required' });
+        }
+
+        const user = await User.findById(req.user.userId);
+        if (!user) return res.status(404).json({ message: 'User not found.' });
+
+        user.name = name.trim();
+        await user.save();
+
+        res.json({ message: 'Display name updated', name: user.name });
+    } catch (error: any) {
+        console.error("Update Display Name Error:", error);
+        res.status(500).json({ message: 'Failed to update display name' });
+    }
+};
+
+
 // GET LEADERBOARD
 export const getLeaderboard = async (req: Request, res: Response) => {
     try {

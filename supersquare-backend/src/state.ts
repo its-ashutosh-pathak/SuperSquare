@@ -50,6 +50,16 @@ class StateManager {
             user.status = 'ONLINE';
             // Update name in case it changed
             user.name = name;
+
+            // CRITICAL FIX: Clean up room timer if user reconnects while in game
+            if (user.currentRoomId) {
+                const room = this.rooms.get(user.currentRoomId);
+                if (room && room.timer) {
+                    clearTimeout(room.timer);
+                    room.timer = undefined;
+                    room.timerStartTime = undefined;
+                }
+            }
         } else {
             user = {
                 id: userId,
