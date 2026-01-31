@@ -499,8 +499,8 @@ const OnlineLobby: React.FC = () => {
                             animate={{ scale: 1, opacity: 1 }}
                             style={styles.modalContent}
                         >
-                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>Edit Profile</h3>
-                            <p style={{ fontSize: '0.9rem', color: '#A1A1AA', marginBottom: '1.5rem' }}>Update your display name or profile picture.</p>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>Edit Display Name</h3>
+                            <p style={{ fontSize: '0.9rem', color: '#A1A1AA', marginBottom: '1.5rem' }}>Update your display name.</p>
 
                             {/* Display Name Input */}
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -521,34 +521,6 @@ const OnlineLobby: React.FC = () => {
                                     }}
                                 />
                             </div>
-
-                            {/* Profile Picture Button */}
-                            <Button
-                                onClick={() => {
-                                    fileInputRef.current?.click();
-                                    setIsEditModalOpen(false);
-                                }}
-                                disabled={isUploading}
-                                style={{
-                                    width: '100%',
-                                    marginBottom: '1rem',
-                                    backgroundColor: '#27272A',
-                                    color: '#FFF',
-                                    border: '1px solid #3F3F46',
-                                    opacity: isUploading ? 0.5 : 1
-                                }}
-                            >
-                                {isUploading ? 'Uploading...' : 'Change Profile Picture'}
-                            </Button>
-
-                            {/* Hidden File Input */}
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                style={{ display: 'none' }}
-                                accept="image/*"
-                                onChange={handleFileSelect}
-                            />
 
                             {/* Action Buttons */}
                             <div style={{ display: 'flex', gap: '1rem' }}>
@@ -1045,8 +1017,9 @@ const OnlineLobby: React.FC = () => {
                                             <div style={{ fontSize: '1.1rem', color: '#F59E0B', fontWeight: 700 }}>{user?.elo}</div>
                                         </div>
 
-                                        {/* Profile Picture - NO DIRECT CLICK */}
+                                        {/* Profile Picture - CLICK TO CHANGE */}
                                         <div
+                                            onClick={() => fileInputRef.current?.click()}
                                             style={{
                                                 width: 'min(9rem, 35vw)',
                                                 height: 'min(9rem, 35vw)',
@@ -1057,6 +1030,7 @@ const OnlineLobby: React.FC = () => {
                                                 justifyContent: 'center',
                                                 border: '3px solid #FACC15',
                                                 boxShadow: '0 0 20px rgba(250, 204, 21, 0.15)',
+                                                cursor: 'pointer',
                                                 position: 'relative',
                                                 overflow: 'hidden',
                                                 flexShrink: 0
@@ -1082,35 +1056,26 @@ const OnlineLobby: React.FC = () => {
                                                     {user?.name?.charAt(0).toUpperCase() || user?.username?.charAt(0).toUpperCase()}
                                                 </span>
                                             )}
-                                        </div>
 
-                                        {/* Edit Pencil Icon */}
-                                        <div
-                                            onClick={handleEditProfile}
-                                            style={{
+                                            {/* Upload Overlay */}
+                                            <div style={{
                                                 position: 'absolute',
-                                                top: '10.5rem',
-                                                right: '50%',
-                                                transform: 'translateX(50%)',
-                                                width: '2.5rem',
-                                                height: '2.5rem',
-                                                borderRadius: '50%',
-                                                backgroundColor: '#FACC15',
+                                                inset: 0,
+                                                backgroundColor: 'rgba(0,0,0,0.5)',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                cursor: 'pointer',
-                                                border: '2px solid #000',
-                                                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                                                transition: 'transform 0.2s'
+                                                opacity: 0,
+                                                transition: 'opacity 0.2s',
+                                                color: 'white',
+                                                fontSize: '0.8rem',
+                                                fontWeight: 600
                                             }}
-                                            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateX(50%) scale(1.1)'}
-                                            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateX(50%) scale(1)'}
-                                        >
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M12 20h9"></path>
-                                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                                            </svg>
+                                                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                                                onMouseLeave={(e) => e.currentTarget.style.opacity = '0'}
+                                            >
+                                                {isUploading ? 'Uploading...' : 'Change'}
+                                            </div>
                                         </div>
 
                                         {/* User Info - Centered */}
@@ -1118,6 +1083,32 @@ const OnlineLobby: React.FC = () => {
                                             <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', alignItems: 'flex-start' }}>
                                                 <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, marginRight: '0.5rem' }}>Name: </span>
                                                 <span style={{ wordBreak: 'break-word', flex: 1, lineHeight: '1.2' }}>{user?.name || "N/A"}</span>
+                                                {/* Small Pencil Icon */}
+                                                <div
+                                                    onClick={handleEditProfile}
+                                                    style={{
+                                                        width: '1.3rem',
+                                                        height: '1.3rem',
+                                                        borderRadius: '50%',
+                                                        backgroundColor: '#FACC15',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        cursor: 'pointer',
+                                                        border: '1.5px solid #000',
+                                                        boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+                                                        transition: 'transform 0.2s',
+                                                        flexShrink: 0,
+                                                        marginLeft: '0.5rem'
+                                                    }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                                >
+                                                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M12 20h9"></path>
+                                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                                    </svg>
+                                                </div>
                                             </div>
                                             <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', alignItems: 'flex-start' }}>
                                                 <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, marginRight: '0.5rem' }}>User ID: </span>
