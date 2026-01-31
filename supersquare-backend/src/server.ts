@@ -77,8 +77,28 @@ const handleGameOver = async (roomId: string, winnerId: string | null, draw: boo
     if (pXSocket) io.to(pXSocket).emit('GAME_OVER', payload);
     if (pOSocket) io.to(pOSocket).emit('GAME_OVER', payload);
 
-    // Clean up room
+    // Clean up room and notify friends of status change
     state.deleteRoom(roomId);
+
+    // Notify friends that players are back ONLINE
+    const notifyFriendsOfStatusChange = (userId: string, status: 'ONLINE' | 'OFFLINE') => {
+        const user = state.getUser(userId);
+        if (!user) return;
+
+        user.friends.forEach(async (fid: string) => {
+            const friend = state.getUser(fid);
+            if (friend && friend.socketId && friend.status !== 'OFFLINE') {
+                io.to(friend.socketId).emit('FRIEND_STATUS', {
+                    userId: user.id,
+                    status: status
+                });
+            }
+        });
+    };
+
+    // Notify both players' friends about status change to ONLINE
+    if (pX) notifyFriendsOfStatusChange(pX, 'ONLINE');
+    if (pO) notifyFriendsOfStatusChange(pO, 'ONLINE');
 };
 
 // Helper to reset timer
@@ -334,7 +354,7 @@ io.on('connection', (socket: Socket) => {
                 targetRank = betterElo + sameEloBetterWins + 1;
             }
 
-            // Notify sender
+            // Notify sender - remove the request from their incoming requests list
             socket.emit('FRIEND_ADDED', {
                 userId: targetUserId,
                 name: targetDb.name,
@@ -346,6 +366,9 @@ io.on('connection', (socket: Socket) => {
                 gamesPlayed: targetDbData?.gamesPlayed,
                 rank: targetRank
             });
+
+            // Also notify sender to remove the request from UI
+            socket.emit('FRIEND_REQ_REMOVED', { userId: targetUserId });
 
             // Notify target
             if (targetActive && targetActive.socketId && targetActive.status !== 'OFFLINE') {
@@ -360,6 +383,9 @@ io.on('connection', (socket: Socket) => {
                     gamesPlayed: senderDbData?.gamesPlayed,
                     rank: senderRank
                 });
+
+                // Also notify target to remove the request from UI
+                io.to(targetActive.socketId).emit('FRIEND_REQ_REMOVED', { userId: sender.id });
             }
 
             console.log(`[DEBUG] Mutual friendship created between ${sender.id} and ${targetUserId}`);

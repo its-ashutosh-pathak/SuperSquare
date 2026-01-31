@@ -222,9 +222,14 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             updateUserStats({ elo, wins, losses, gamesPlayed });
         };
 
+        const onFriendReqRemoved = ({ userId }: any) => {
+            setIncomingRequests(prev => prev.filter(req => req.id !== userId));
+        };
+
         socket.on('LOGIN_SUCCESS', onLoginSuccess);
         socket.on('FRIEND_REQ_RECEIVED', onFriendReq);
         socket.on('FRIEND_ADDED', onFriendAdded);
+        socket.on('FRIEND_REQ_REMOVED', onFriendReqRemoved);
         socket.on('FRIEND_STATUS', onFriendStatus);
         socket.on('PROFILE_UPDATED', onProfileUpdated);
         socket.on('GAME_START', onGameStart);
@@ -244,6 +249,7 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             socket.off('LOGIN_SUCCESS', onLoginSuccess);
             socket.off('FRIEND_REQ_RECEIVED', onFriendReq);
             socket.off('FRIEND_ADDED', onFriendAdded);
+            socket.off('FRIEND_REQ_REMOVED', onFriendReqRemoved);
             socket.off('FRIEND_STATUS', onFriendStatus);
             socket.off('PROFILE_UPDATED', onProfileUpdated);
             socket.off('GAME_START', onGameStart);
