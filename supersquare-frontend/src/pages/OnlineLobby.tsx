@@ -752,7 +752,13 @@ const OnlineLobby: React.FC = () => {
                                             <h3 style={styles.sectionTitle}>Requests</h3>
                                             {incomingRequests.map((req) => (
                                                 <div key={req.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid #27272A' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
+                                                    <div
+                                                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, cursor: 'pointer' }}
+                                                        onClick={() => {
+                                                            setSelectedUserId(req.id);
+                                                            getUserStats(req.id);
+                                                        }}
+                                                    >
                                                         <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', background: '#3F3F46', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', overflow: 'hidden' }}>
                                                             {req.profilePicture ? (
                                                                 <img src={req.profilePicture} alt={req.name} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -768,13 +774,19 @@ const OnlineLobby: React.FC = () => {
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                         <Button
                                                             style={{ height: '2rem', padding: '0 1rem', backgroundColor: '#10B981', color: 'black', fontSize: '0.75rem', borderRadius: '0.5rem' }}
-                                                            onClick={() => respondFriendRequest(req.id, true)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                respondFriendRequest(req.id, true);
+                                                            }}
                                                         >
                                                             Accept
                                                         </Button>
                                                         <Button
                                                             style={{ height: '2rem', padding: '0 1rem', backgroundColor: '#EF4444', color: 'white', fontSize: '0.75rem', borderRadius: '0.5rem' }}
-                                                            onClick={() => respondFriendRequest(req.id, false)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                respondFriendRequest(req.id, false);
+                                                            }}
                                                         >
                                                             Reject
                                                         </Button>
@@ -906,14 +918,9 @@ const OnlineLobby: React.FC = () => {
                                                 return (
                                                     <div
                                                         key={user.id}
-                                                        onClick={(e) => {
-                                                            if (!isSent && !isFriend) {
-                                                                e.stopPropagation();
-                                                                sendFriendRequest(user.id);
-                                                            } else {
-                                                                setSelectedUserId(user.id);
-                                                                getUserStats(user.id);
-                                                            }
+                                                        onClick={() => {
+                                                            setSelectedUserId(user.id);
+                                                            getUserStats(user.id);
                                                         }}
                                                         onMouseEnter={(e) => {
                                                             if (!isSent && !isFriend) {
@@ -926,7 +933,7 @@ const OnlineLobby: React.FC = () => {
                                                             e.currentTarget.style.borderColor = '#27272A';
                                                         }}
                                                     >
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: 0 }}>
                                                             <div style={{
                                                                 width: '2.5rem',
                                                                 height: '2.5rem',
@@ -956,25 +963,37 @@ const OnlineLobby: React.FC = () => {
                                                             </div>
                                                         </div>
                                                         {isFriend ? (
-                                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                                <circle cx="9" cy="7" r="4"></circle>
-                                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                                            </svg>
+                                                            <div style={{ padding: '0.5rem' }}>
+                                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                                </svg>
+                                                            </div>
                                                         ) : isSent ? (
-                                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                                <circle cx="8.5" cy="7" r="4"></circle>
-                                                                <polyline points="17 11 19 13 23 9"></polyline>
-                                                            </svg>
+                                                            <div style={{ padding: '0.5rem' }}>
+                                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                                                    <polyline points="17 11 19 13 23 9"></polyline>
+                                                                </svg>
+                                                            </div>
                                                         ) : (
-                                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                                <circle cx="8.5" cy="7" r="4"></circle>
-                                                                <line x1="20" y1="8" x2="20" y2="14"></line>
-                                                                <line x1="23" y1="11" x2="17" y2="11"></line>
-                                                            </svg>
+                                                            <div
+                                                                style={{ padding: '0.5rem', cursor: 'pointer' }}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleSendFriendRequest(user.id);
+                                                                }}
+                                                            >
+                                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                                                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                                                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                                                </svg>
+                                                            </div>
                                                         )}
                                                     </div>
                                                 );
