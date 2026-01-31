@@ -20,6 +20,11 @@ export interface FriendRequest {
     id: string;
     name: string;
     profilePicture?: string;
+    elo?: number;
+    wins?: number;
+    losses?: number;
+    gamesPlayed?: number;
+    rank?: number;
 }
 
 export interface GameInvite {
@@ -66,7 +71,7 @@ interface MultiplayerContextType {
 const MultiplayerContext = createContext<MultiplayerContextType | undefined>(undefined);
 
 export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { user } = useAuth();
+    const { updateUserStats, user } = useAuth();
 
     // State mirroring useMultiplayer hook logic but persistent
     const [isConnected, setIsConnected] = useState(false);
@@ -110,10 +115,19 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             setIsSearching(false);
         };
 
-        const onFriendReq = ({ fromUser, fromUserName }: any) => {
+        const onFriendReq = ({ fromUser, fromUserName, profilePicture, elo, wins, losses, gamesPlayed, rank }: any) => {
             setIncomingRequests(prev => {
                 if (prev.find(r => r.id === fromUser)) return prev;
-                return [...prev, { id: fromUser, name: fromUserName || fromUser }];
+                return [...prev, {
+                    id: fromUser,
+                    name: fromUserName || fromUser,
+                    profilePicture,
+                    elo,
+                    wins,
+                    losses,
+                    gamesPlayed,
+                    rank
+                }];
             });
         };
 
@@ -203,10 +217,16 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             setLastMessage(payload);
         };
 
+        const onProfileUpdated = ({ elo, wins, losses, gamesPlayed }: any) => {
+            console.log("SOCKET: PROFILE_UPDATED", { elo, wins, losses, gamesPlayed });
+            updateUserStats({ elo, wins, losses, gamesPlayed });
+        };
+
         socket.on('LOGIN_SUCCESS', onLoginSuccess);
         socket.on('FRIEND_REQ_RECEIVED', onFriendReq);
         socket.on('FRIEND_ADDED', onFriendAdded);
         socket.on('FRIEND_STATUS', onFriendStatus);
+        socket.on('PROFILE_UPDATED', onProfileUpdated);
         socket.on('GAME_START', onGameStart);
         socket.on('ROOM_CREATED', onRoomCreated);
         socket.on('GAME_UPDATE', onGameUpdate);
@@ -225,6 +245,7 @@ export const MultiplayerProvider: React.FC<{ children: ReactNode }> = ({ childre
             socket.off('FRIEND_REQ_RECEIVED', onFriendReq);
             socket.off('FRIEND_ADDED', onFriendAdded);
             socket.off('FRIEND_STATUS', onFriendStatus);
+            socket.off('PROFILE_UPDATED', onProfileUpdated);
             socket.off('GAME_START', onGameStart);
             socket.off('ROOM_CREATED', onRoomCreated);
             socket.off('GAME_UPDATE', onGameUpdate);

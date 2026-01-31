@@ -34,6 +34,31 @@ const handleGameOver = async (roomId: string, winnerId: string | null, draw: boo
             await User.updateOne({ username: winnerId }, { $inc: { gamesPlayed: 1, wins: 1, elo: 10 } });
             await User.updateOne({ username: loserId }, { $inc: { gamesPlayed: 1, losses: 1, elo: -10 } });
         }
+
+        // Fetch updated stats and notify players of their profile updates
+        const pXUpdated = await User.findOne({ username: pX }).select('elo wins losses gamesPlayed');
+        const pOUpdated = await User.findOne({ username: pO }).select('elo wins losses gamesPlayed');
+
+        const pXSocket = state.getUser(pX)?.socketId;
+        const pOSocket = state.getUser(pO)?.socketId;
+
+        if (pXSocket && pXUpdated) {
+            io.to(pXSocket).emit('PROFILE_UPDATED', {
+                elo: pXUpdated.elo,
+                wins: pXUpdated.wins,
+                losses: pXUpdated.losses,
+                gamesPlayed: pXUpdated.gamesPlayed
+            });
+        }
+
+        if (pOSocket && pOUpdated) {
+            io.to(pOSocket).emit('PROFILE_UPDATED', {
+                elo: pOUpdated.elo,
+                wins: pOUpdated.wins,
+                losses: pOUpdated.losses,
+                gamesPlayed: pOUpdated.gamesPlayed
+            });
+        }
     } catch (err) {
         console.error("Error updating stats:", err);
     }
@@ -264,6 +289,83 @@ io.on('connection', (socket: Socket) => {
             return;
         }
 
+        // Check if sender already has incoming request from target (MUTUAL REQUEST)
+        const senderDb = await User.findOne({ username: sender.id });
+        if (senderDb && senderDb.incomingRequests.includes(targetUserId)) {
+            console.log(`[DEBUG] MUTUAL FRIEND REQUEST DETECTED! Auto-accepting friendship.`);
+
+            // Remove requests from both users
+            senderDb.incomingRequests = senderDb.incomingRequests.filter((id: string) => id !== targetUserId);
+            targetDb.incomingRequests = targetDb.incomingRequests.filter((id: string) => id !== sender.id);
+
+            // Add to friends list for both
+            if (!senderDb.friends.includes(targetUserId)) senderDb.friends.push(targetUserId);
+            if (!targetDb.friends.includes(sender.id)) targetDb.friends.push(sender.id);
+
+            // Save both to DB
+            await senderDb.save();
+            await targetDb.save();
+
+            // Update in-memory state  
+            sender.incomingRequests = sender.incomingRequests.filter(id => id !== targetUserId);
+            if (!sender.friends.includes(targetUserId)) sender.friends.push(targetUserId);
+
+            const targetActive = state.getUser(targetUserId);
+            if (targetActive) {
+                targetActive.incomingRequests = targetActive.incomingRequests.filter(id => id !== sender.id);
+                if (!targetActive.friends.includes(sender.id)) targetActive.friends.push(sender.id);
+            }
+
+            // Notify both users with FRIEND_ADDED
+            const senderDbData = await User.findOne({ username: sender.id }).select('profilePicture elo wins losses gamesPlayed');
+            const targetDbData = await User.findOne({ username: targetUserId }).select('profilePicture elo wins losses gamesPlayed');
+
+            let senderRank = 0;
+            if (senderDbData) {
+                const betterElo = await User.countDocuments({ elo: { $gt: senderDbData.elo } });
+                const sameEloBetterWins = await User.countDocuments({ elo: senderDbData.elo, wins: { $gt: senderDbData.wins } });
+                senderRank = betterElo + sameEloBetterWins + 1;
+            }
+
+            let targetRank = 0;
+            if (targetDbData) {
+                const betterElo = await User.countDocuments({ elo: { $gt: targetDbData.elo } });
+                const sameEloBetterWins = await User.countDocuments({ elo: targetDbData.elo, wins: { $gt: targetDbData.wins } });
+                targetRank = betterElo + sameEloBetterWins + 1;
+            }
+
+            // Notify sender
+            socket.emit('FRIEND_ADDED', {
+                userId: targetUserId,
+                name: targetDb.name,
+                status: targetActive ? targetActive.status : 'OFFLINE',
+                profilePicture: targetDbData?.profilePicture,
+                elo: targetDbData?.elo,
+                wins: targetDbData?.wins,
+                losses: targetDbData?.losses,
+                gamesPlayed: targetDbData?.gamesPlayed,
+                rank: targetRank
+            });
+
+            // Notify target
+            if (targetActive && targetActive.socketId && targetActive.status !== 'OFFLINE') {
+                io.to(targetActive.socketId).emit('FRIEND_ADDED', {
+                    userId: sender.id,
+                    name: sender.name,
+                    status: sender.status,
+                    profilePicture: senderDbData?.profilePicture,
+                    elo: senderDbData?.elo,
+                    wins: senderDbData?.wins,
+                    losses: senderDbData?.losses,
+                    gamesPlayed: senderDbData?.gamesPlayed,
+                    rank: senderRank
+                });
+            }
+
+            console.log(`[DEBUG] Mutual friendship created between ${sender.id} and ${targetUserId}`);
+            return; // Exit - don't create a new request
+        }
+
         const targetActive = state.getUser(targetUserId);
         console.log(`[DEBUG] Target Active State:`, targetActive ? 'Found' : 'Not Found', targetActive?.status);
 
@@ -286,11 +388,25 @@ io.on('connection', (socket: Socket) => {
                 }
                 if (targetActive.socketId && targetActive.status !== 'OFFLINE') {
                     console.log(`[DEBUG] Emitting FRIEND_REQ_RECEIVED to ${targetActive.socketId}`);
-                    // Send Sender Name!
+
+                    // Fetch sender's full profile data
+                    const senderFullData = await User.findOne({ username: sender.id }).select('name profilePicture elo wins losses gamesPlayed');
+                    let rank = 0;
+                    if (senderFullData) {
+                        const betterElo = await User.countDocuments({ elo: { $gt: senderFullData.elo } });
+                        const sameEloBetterWins = await User.countDocuments({ elo: senderFullData.elo, wins: { $gt: senderFullData.wins } });
+                        rank = betterElo + sameEloBetterWins + 1;
+                    }
+
                     io.to(targetActive.socketId).emit('FRIEND_REQ_RECEIVED', {
                         fromUser: sender.id,
                         fromUserName: sender.name,
-                        profilePicture: (await User.findOne({ username: sender.id }).select('profilePicture'))?.profilePicture
+                        profilePicture: senderFullData?.profilePicture,
+                        elo: senderFullData?.elo,
+                        wins: senderFullData?.wins,
+                        losses: senderFullData?.losses,
+                        gamesPlayed: senderFullData?.gamesPlayed,
+                        rank
                     });
                 } else {
                     console.log(`[DEBUG] Target offline or no socket. Status: ${targetActive.status}, Socket: ${targetActive.socketId}`);

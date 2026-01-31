@@ -22,6 +22,7 @@ export interface ServerToClientEvents {
     FRIEND_STATUS: (payload: { userId: string, status: string }) => void;
     FRIEND_REQ_RECEIVED: (payload: { fromUser: string }) => void;
     FRIEND_ADDED: (payload: { userId: string, status: string }) => void;
+    PROFILE_UPDATED: (payload: { elo: number, wins: number, losses: number, gamesPlayed: number }) => void;
     GAME_START: (payload: { roomId: string, opponentId: string, opponentName: string, opponentUsername: string, opponentProfilePicture?: string, symbol: 'X' | 'O', initialState: GameState, timeLeft: number }) => void;
     GAME_UPDATE: (payload: { gameState: GameState, timeLeft: number }) => void;
     ROOM_CREATED: (payload: { roomId: string }) => void;

@@ -21,16 +21,31 @@ const AppUrlListener = () => {
     useEffect(() => {
         CapacitorApp.addListener('appUrlOpen', (data: any) => {
             try {
-                // Example url: com.supersquare.game://auth?token=XYZ
+                console.log('[Deep Link] Received URL:', data.url);
+
+                // Example URLs:
+                // com.supersquare.game://auth/auth-success?token=XYZ
+                // com.supersquare.game://auth/complete-google?token=XYZ&email=user@example.com
                 const url = new URL(data.url);
+
                 if (url.host === 'auth') {
-                    const token = url.searchParams.get('token');
-                    if (token) {
-                        navigate(`/auth-success?token=${token}`);
-                    }
+                    const pathname = url.pathname || '/';
+                    const params = url.searchParams;
+
+                    console.log('[Deep Link] Host: auth, Pathname:', pathname);
+                    console.log('[Deep Link] Query params:', Object.fromEntries(params.entries()));
+
+                    // Build the navigation path with all query parameters
+                    const queryString = params.toString();
+                    const navigationPath = queryString
+                        ? `${pathname}?${queryString}`
+                        : pathname;
+
+                    console.log('[Deep Link] Navigating to:', navigationPath);
+                    navigate(navigationPath);
                 }
             } catch (error) {
-                console.error('Error handling deep link:', error);
+                console.error('[Deep Link] Error handling deep link:', error);
             }
         });
     }, [navigate]);

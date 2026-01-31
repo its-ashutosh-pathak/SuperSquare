@@ -24,6 +24,7 @@ interface AuthContextType {
     login: (userData: any) => void; // Accepts user data or handles calling service internally (better to just set state here)
     logout: () => void;
     checkAuth: () => Promise<void>;
+    updateUserStats: (stats: { elo: number; wins: number; losses: number; gamesPlayed: number }) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -64,8 +65,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(null);
     };
 
+    const updateUserStats = (stats: { elo: number; wins: number; losses: number; gamesPlayed: number }) => {
+        setUser(prev => prev ? { ...prev, ...stats } : null);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated: !!user, loading, login, logout, checkAuth }}>
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user, loading, login, logout, checkAuth, updateUserStats }}>
             {!loading && children}
         </AuthContext.Provider>
     );

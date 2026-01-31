@@ -665,18 +665,27 @@ const OnlineLobby: React.FC = () => {
                                         <CardContent style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                             <h3 style={styles.sectionTitle}>Requests</h3>
                                             {incomingRequests.map((req) => (
-                                                <div key={req.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid #27272A' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                                        <div style={{ width: '2rem', height: '2rem', borderRadius: '50%', background: '#3F3F46', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', overflow: 'hidden' }}>
+                                                <div key={req.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid #27272A' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
+                                                        <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', background: '#3F3F46', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', overflow: 'hidden' }}>
                                                             {req.profilePicture ? (
                                                                 <img src={req.profilePicture} alt={req.name} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                             ) : (
                                                                 req.name.charAt(0).toUpperCase()
                                                             )}
                                                         </div>
-                                                        <div>
+                                                        <div style={{ flex: 1 }}>
                                                             <div style={{ fontSize: '0.9rem', color: '#E5E7EB', fontWeight: 500 }}>{req.name}</div>
                                                             <div style={{ fontSize: '0.75rem', color: '#71717A' }}>@{req.id}</div>
+                                                            {req.elo !== undefined && (
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#A1A1AA', marginTop: '0.2rem' }}>
+                                                                    {req.rank && <div title="Rank"><span style={{ color: '#F59E0B', fontWeight: 600 }}>#{req.rank}</span> Rank</div>}
+                                                                    <div title="Games Played"><span style={{ color: '#FACC15', fontWeight: 600 }}>{req.gamesPlayed || 0}</span> G</div>
+                                                                    <div title="Wins"><span style={{ color: '#F59E0B', fontWeight: 600 }}>{req.wins || 0}</span> W</div>
+                                                                    <div title="Losses"><span style={{ color: '#EF4444', fontWeight: 600 }}>{req.losses || 0}</span> L</div>
+                                                                    <div title="Rating"><span style={{ color: '#FACC15', fontWeight: 600 }}>{req.elo}</span> Rating</div>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
