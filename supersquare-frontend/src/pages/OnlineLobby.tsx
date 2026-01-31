@@ -1082,7 +1082,7 @@ const OnlineLobby: React.FC = () => {
                                         <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '0.35rem', width: '100%', maxWidth: '300px', padding: '0 1rem' }}>
                                             <div style={{ fontSize: 'clamp(0.85rem, 4vw, 1rem)', color: '#FAFAFA', fontWeight: 500, display: 'flex', alignItems: 'flex-start' }}>
                                                 <span style={{ color: '#A1A1AA', fontWeight: 400, flexShrink: 0, marginRight: '0.5rem' }}>Name: </span>
-                                                <span style={{ wordBreak: 'break-word', flex: 1, lineHeight: '1.2' }}>{user?.name || "N/A"}</span>
+                                                <span style={{ wordBreak: 'break-word', lineHeight: '1.2' }}>{user?.name || "N/A"}</span>
                                                 {/* Small Pencil Icon */}
                                                 <div
                                                     onClick={handleEditProfile}
@@ -1099,7 +1099,7 @@ const OnlineLobby: React.FC = () => {
                                                         boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
                                                         transition: 'transform 0.2s',
                                                         flexShrink: 0,
-                                                        marginLeft: '0.5rem'
+                                                        marginLeft: '0.4rem'
                                                     }}
                                                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                                                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
