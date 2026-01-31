@@ -1283,55 +1283,138 @@ const OnlineLobby: React.FC = () => {
                     >
                         {userStats ? (
                             <>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                    <div style={{ width: '5rem', height: '5rem', borderRadius: '50%', background: '#27272A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FACC15', fontSize: '2rem', fontWeight: 600, overflow: 'hidden', marginBottom: '0.75rem' }}>
-                                        {userStats.profilePicture ? (
-                                            <img src={userStats.profilePicture} alt={userStats.name} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                        ) : (
-                                            userStats.name.charAt(0).toUpperCase()
-                                        )}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                    {/* Top Row: Profile + Games/Wins */}
+                                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                        {/* Profile Card (Left) */}
+                                        <div style={{
+                                            flex: 1,
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            backgroundColor: '#27272A',
+                                            borderRadius: '1rem',
+                                            padding: '1rem',
+                                            minWidth: 0
+                                        }}>
+                                            <div style={{
+                                                width: '4rem',
+                                                height: '4rem',
+                                                borderRadius: '50%',
+                                                background: '#3F3F46',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                color: '#FACC15',
+                                                fontSize: '1.5rem',
+                                                fontWeight: 600,
+                                                overflow: 'hidden',
+                                                marginBottom: '0.5rem'
+                                            }}>
+                                                {userStats.profilePicture ? (
+                                                    <img src={userStats.profilePicture} alt={userStats.name} referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                ) : (
+                                                    userStats.name.charAt(0).toUpperCase()
+                                                )}
+                                            </div>
+                                            <div style={{ color: '#E5E7EB', fontWeight: 700, fontSize: '1rem', textAlign: 'center', lineHeight: 1.2 }}>{userStats.name}</div>
+                                            <div style={{ color: '#71717A', fontSize: '0.75rem', textAlign: 'center', marginTop: '0.25rem', wordBreak: 'break-all' }}>@{userStats.userId}</div>
+                                        </div>
+
+                                        {/* Games & Wins Column (Right) */}
+                                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                            <div style={{
+                                                flex: 1,
+                                                backgroundColor: '#27272A',
+                                                borderRadius: '1rem',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                padding: '0.5rem'
+                                            }}>
+                                                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FACC15' }}>{userStats.gamesPlayed}</div>
+                                                <div style={{ fontSize: '0.75rem', color: '#A1A1AA' }}>Games</div>
+                                            </div>
+                                            <div style={{
+                                                flex: 1,
+                                                backgroundColor: '#27272A',
+                                                borderRadius: '1rem',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                padding: '0.5rem'
+                                            }}>
+                                                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FACC15' }}>{userStats.wins}</div>
+                                                <div style={{ fontSize: '0.75rem', color: '#A1A1AA' }}>Wins</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#E5E7EB' }}>{userStats.name}</div>
-                                    <div style={{ fontSize: '0.875rem', color: '#71717A' }}>@{userStats.userId}</div>
-                                </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
-                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Rank</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#F59E0B' }}>#{userStats.rank}</div>
+
+                                    {/* Middle Row: Rating + Losses */}
+                                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                        <div style={{
+                                            flex: 1,
+                                            backgroundColor: '#27272A',
+                                            borderRadius: '1rem',
+                                            padding: '0.75rem',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FACC15' }}>{userStats.elo}</div>
+                                            <div style={{ fontSize: '0.75rem', color: '#A1A1AA' }}>Rating</div>
+                                        </div>
+                                        <div style={{
+                                            flex: 1,
+                                            backgroundColor: '#27272A',
+                                            borderRadius: '1rem',
+                                            padding: '0.75rem',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#EF4444' }}>{userStats.losses}</div>
+                                            <div style={{ fontSize: '0.75rem', color: '#A1A1AA' }}>Losses</div>
+                                        </div>
                                     </div>
-                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Games</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#FACC15' }}>{userStats.gamesPlayed}</div>
-                                    </div>
-                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Wins</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#10B981' }}>{userStats.wins}</div>
-                                    </div>
-                                    <div style={{ backgroundColor: '#27272A', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Losses</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#EF4444' }}>{userStats.losses}</div>
-                                    </div>
-                                </div>
-                                <div style={{ backgroundColor: '#27272A', padding: '1rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                                    <div style={{ fontSize: '0.75rem', color: '#71717A', marginBottom: '0.25rem' }}>Rating</div>
-                                    <div style={{ fontSize: '2rem', fontWeight: 700, color: '#FACC15' }}>{userStats.elo}</div>
-                                </div>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedUserId(null);
-                                        clearUserStats();
-                                    }}
-                                    style={{
-                                        width: '100%',
-                                        marginTop: '1rem',
+
+                                    {/* Bottom Row: Rank */}
+                                    <div style={{
                                         backgroundColor: '#27272A',
-                                        color: '#E5E7EB',
-                                        borderRadius: '0.5rem',
-                                        padding: '0.75rem'
-                                    }}
-                                >
-                                    Close
-                                </Button>
+                                        borderRadius: '1rem',
+                                        padding: '0.75rem 1.5rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <div style={{ fontSize: '1.25rem', color: '#71717A', fontWeight: 500 }}>Rank</div>
+                                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#F59E0B' }}>
+                                            {typeof userStats.rank === 'number' ? userStats.rank : '#-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Close Button (Optional/Explicit) */}
+                                    <Button
+                                        onClick={() => {
+                                            setSelectedUserId(null);
+                                            clearUserStats();
+                                        }}
+                                        style={{
+                                            width: '100%',
+                                            marginTop: '0.25rem',
+                                            backgroundColor: 'transparent',
+                                            color: '#71717A',
+                                            fontSize: '0.85rem'
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </div>
                             </>
                         ) : (
                             <div style={{ textAlign: 'center', padding: '2rem', color: '#71717A' }}>
