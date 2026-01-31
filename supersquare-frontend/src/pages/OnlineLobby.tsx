@@ -964,7 +964,7 @@ const OnlineLobby: React.FC = () => {
                                                                     @{user.id}
                                                                 </div>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.7rem', color: '#52525B', marginTop: '0.2rem' }}>
-                                                                    <div title="Rank"><span style={{ color: '#FACC15', fontWeight: 600 }}>#{user.rank || '-'}</span> Rank</div>
+                                                                    <div title="Rank"><span style={{ color: '#F59E0B', fontWeight: 600 }}>#{user.rank || '-'}</span> Rank</div>
                                                                     <div title="Games Played"><span style={{ color: '#FACC15', fontWeight: 600 }}>{user.gamesPlayed || 0}</span> G</div>
                                                                     <div title="Wins"><span style={{ color: '#F59E0B', fontWeight: 600 }}>{user.wins || 0}</span> W</div>
                                                                     <div title="Losses"><span style={{ color: '#EF4444', fontWeight: 600 }}>{user.losses || 0}</span> L</div>

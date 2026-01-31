@@ -179,10 +179,18 @@ io.on('connection', (socket: Socket) => {
             const user = state.createUser(safeUserId, name, socket.id, persistentFriends, persistentRequests);
             console.log(`User Logged In: ${user.id} (${user.name})`);
 
-            // Construct Rich Friend List with Status (NO RANK CALCULATION - performance fix)
+            // Construct Rich Friend List with Status
             const richFriends = await Promise.all(persistentFriends.map(async (fid: string) => {
                 const activeFriend = state.getUser(fid);
                 const fDb = await User.findOne({ username: fid }).select('name profilePicture lastActiveAt elo wins losses gamesPlayed');
+
+                // Calculate rank
+                let rank = 0;
+                if (fDb) {
+                    const betterElo = await User.countDocuments({ elo: { $gt: fDb.elo } });
+                    const sameEloBetterWins = await User.countDocuments({ elo: fDb.elo, wins: { $gt: fDb.wins } });
+                    rank = betterElo + sameEloBetterWins + 1;
+                }
 
                 if (activeFriend && activeFriend.status !== 'OFFLINE') {
                     return {
@@ -190,7 +198,8 @@ io.on('connection', (socket: Socket) => {
                         name: activeFriend.name,
                         status: activeFriend.status,
                         profilePicture: fDb?.profilePicture,
-                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed
+                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed,
+                        rank
                     };
                 } else {
                     return {
@@ -199,7 +208,8 @@ io.on('connection', (socket: Socket) => {
                         status: 'OFFLINE',
                         lastActiveAt: fDb?.lastActiveAt,
                         profilePicture: fDb?.profilePicture,
-                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed
+                        elo: fDb?.elo, wins: fDb?.wins, losses: fDb?.losses, gamesPlayed: fDb?.gamesPlayed,
+                        rank
                     };
                 }
             }));
